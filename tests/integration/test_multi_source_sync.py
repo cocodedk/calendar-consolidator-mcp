@@ -77,8 +77,8 @@ def test_sync_all_sources_aggregates_events(mock_connector_class, mock_config_mu
 
     syncer = Syncer(mock_config_multi_source)
 
-    # Sync each source
-    with patch.object(syncer, '_get_connector') as mock_get_conn:
+    # Sync each source - patch the connector factory used by SyncExecutor
+    with patch('python.sync.syncer.connector_factory.get_connector') as mock_get_conn:
         mock_get_conn.side_effect = [mock_source1, mock_target, mock_source2, mock_target]
 
         syncer.sync_once(1)

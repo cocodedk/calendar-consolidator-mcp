@@ -32,12 +32,12 @@ def test_init_db_creates_tables():
         cursor.execute("""
             SELECT name FROM sqlite_master
             WHERE type='table' AND name IN
-            ('sources', 'targets', 'mappings', 'sync_logs', 'settings')
+            ('sources', 'target', 'mappings', 'sync_logs', 'settings')
         """)
         tables = [row[0] for row in cursor.fetchall()]
 
         assert 'sources' in tables
-        assert 'targets' in tables
+        assert 'target' in tables
         assert 'mappings' in tables
         assert 'sync_logs' in tables
         assert 'settings' in tables
@@ -83,6 +83,6 @@ def test_init_db_schema_structure():
         columns = [row[1] for row in cursor.fetchall()]
         assert 'source_event_uid' in columns
         assert 'target_event_id' in columns
-        assert 'content_hash' in columns
+        assert 'last_hash' in columns
 
         db.close()

@@ -16,10 +16,17 @@ def test_rollback_on_constraint_violation():
 
         cursor = db.conn.cursor()
 
+        # Create a source first (required by foreign key)
+        cursor.execute("""
+            INSERT INTO sources (type, calendar_id, name, cred_blob)
+            VALUES (?, ?, ?, ?)
+        """, ('graph', 'test-cal', 'Test', b'creds'))
+        db.conn.commit()
+
         # Insert initial data
         cursor.execute("""
             INSERT INTO mappings
-            (source_id, source_event_uid, target_event_id, content_hash)
+            (source_id, source_event_uid, target_event_id, last_hash)
             VALUES (?, ?, ?, ?)
         """, (1, 'evt1', 'target1', 'hash1'))
         db.conn.commit()
@@ -28,7 +35,7 @@ def test_rollback_on_constraint_violation():
             # Try to insert duplicate (should fail on unique constraint)
             cursor.execute("""
                 INSERT INTO mappings
-                (source_id, source_event_uid, target_event_id, content_hash)
+                (source_id, source_event_uid, target_event_id, last_hash)
                 VALUES (?, ?, ?, ?)
             """, (1, 'evt1', 'target1', 'hash1'))
             db.conn.commit()
@@ -95,7 +102,7 @@ def test_nested_transaction_rollback():
 
             cursor.execute("""
                 INSERT INTO mappings
-                (source_id, source_event_uid, target_event_id, content_hash)
+                (source_id, source_event_uid, target_event_id, last_hash)
                 VALUES (?, ?, ?, ?)
             """, (1, 'evt1', 'target1', 'hash1'))
 
@@ -103,7 +110,7 @@ def test_nested_transaction_rollback():
             try:
                 cursor.execute("""
                     INSERT INTO mappings
-                    (source_id, source_event_uid, target_event_id, content_hash)
+                    (source_id, source_event_uid, target_event_id, last_hash)
                     VALUES (?, ?, ?, ?)
                 """, (1, 'evt2', 'target2', 'hash2'))
 
@@ -135,13 +142,20 @@ def test_explicit_savepoint_rollback():
 
         cursor = db.conn.cursor()
 
+        # Create a source first (required by foreign key)
+        cursor.execute("""
+            INSERT INTO sources (type, calendar_id, name, cred_blob)
+            VALUES (?, ?, ?, ?)
+        """, ('graph', 'test-cal', 'Test', b'creds'))
+        db.conn.commit()
+
         # Start transaction
         cursor.execute("BEGIN")
 
         # Insert first record
         cursor.execute("""
             INSERT INTO mappings
-            (source_id, source_event_uid, target_event_id, content_hash)
+            (source_id, source_event_uid, target_event_id, last_hash)
             VALUES (?, ?, ?, ?)
         """, (1, 'evt1', 'target1', 'hash1'))
 
@@ -151,7 +165,7 @@ def test_explicit_savepoint_rollback():
         # Insert second record
         cursor.execute("""
             INSERT INTO mappings
-            (source_id, source_event_uid, target_event_id, content_hash)
+            (source_id, source_event_uid, target_event_id, last_hash)
             VALUES (?, ?, ?, ?)
         """, (1, 'evt2', 'target2', 'hash2'))
 
