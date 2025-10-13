@@ -105,6 +105,20 @@ The project follows strict modularization guidelines:
 - Single responsibility per module
 - Clear separation of concerns
 
+## Testing
+
+**Python Unit Tests**:
+```bash
+bash run_tests.sh
+```
+
+**Playwright E2E Tests**:
+```bash
+bash run_e2e_tests.sh
+```
+
+See `tests/` for Python tests and `tests-e2e/` for Playwright tests.
+
 ## License
 
 MIT
