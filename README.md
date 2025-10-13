@@ -59,6 +59,61 @@ Then open http://localhost:3000 in your browser.
 MCP_MODE=true node node/server/index.js
 ```
 
+### MCP Tools Available
+
+The MCP server exposes the following tools for AI/agent control:
+
+**Configuration Tools:**
+- `listCalendars` - List available calendars from Microsoft Graph, Google, iCloud, or CalDAV
+- `getConfig` - Get current sources, target, and settings configuration
+
+**Sync Operation Tools:**
+- `previewSync` - Preview sync changes without making changes (dry run)
+- `syncOnce` - Execute calendar sync for a source or all sources
+- `getSyncStatus` - Get current sync status and recent logs
+
+For detailed tool schemas and examples, see `0-docs/04-api-design/01-mcp-tools.md`
+
+### MCP Configuration Setup
+
+To use this MCP server with Claude Desktop or Cursor, add the following to your MCP configuration:
+
+**For Claude Desktop** (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
+```json
+{
+  "mcpServers": {
+    "calendar-consolidator": {
+      "command": "node",
+      "args": [
+        "/absolute/path/to/calendar-consolidator-mcp/node/server/index.js"
+      ],
+      "env": {
+        "MCP_MODE": "true"
+      }
+    }
+  }
+}
+```
+
+**For Cursor** (`.cursor/mcp.json` in your workspace):
+```json
+{
+  "mcpServers": {
+    "calendar-consolidator": {
+      "command": "node",
+      "args": [
+        "node/server/index.js"
+      ],
+      "env": {
+        "MCP_MODE": "true"
+      }
+    }
+  }
+}
+```
+
+Replace `/absolute/path/to/calendar-consolidator-mcp` with the actual path to your installation.
+
 ## Project Structure
 
 ```
