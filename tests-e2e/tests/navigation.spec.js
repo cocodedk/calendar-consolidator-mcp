@@ -3,16 +3,16 @@ import { test, expect } from '@playwright/test';
 test.describe('Tab Navigation', () => {
   test('should load the dashboard page', async ({ page }) => {
     await page.goto('/');
-    
+
     // Check page title
     await expect(page).toHaveTitle(/Calendar Consolidator/);
-    
+
     // Check header
     await expect(page.locator('h1')).toContainText('Calendar Consolidator');
-    
+
     // Check dashboard tab is active
     await expect(page.locator('.tab-btn[data-tab="dashboard"]')).toHaveClass(/active/);
-    
+
     // Check dashboard content is visible
     await expect(page.locator('#dashboard-tab')).toBeVisible();
   });
@@ -28,7 +28,7 @@ test.describe('Tab Navigation', () => {
     
     // Check Sources content is visible
     await expect(page.locator('#sources-tab')).toBeVisible();
-    await expect(page.locator('h2')).toContainText('Source Calendars');
+    await expect(page.locator('#sources-tab h2')).toContainText('Source Calendars');
   });
 
   test('should navigate to Target tab', async ({ page }) => {
@@ -42,7 +42,7 @@ test.describe('Tab Navigation', () => {
     
     // Check Target content is visible
     await expect(page.locator('#target-tab')).toBeVisible();
-    await expect(page.locator('h2')).toContainText('Target Calendar');
+    await expect(page.locator('#target-tab h2')).toContainText('Target Calendar');
   });
 
   test('should navigate to Sync tab', async ({ page }) => {
@@ -56,7 +56,7 @@ test.describe('Tab Navigation', () => {
     
     // Check Sync content is visible
     await expect(page.locator('#sync-tab')).toBeVisible();
-    await expect(page.locator('h2')).toContainText('Sync Operations');
+    await expect(page.locator('#sync-tab h2')).toContainText('Sync Operations');
   });
 
   test('should navigate to Logs tab', async ({ page }) => {
@@ -70,7 +70,7 @@ test.describe('Tab Navigation', () => {
     
     // Check Logs content is visible
     await expect(page.locator('#logs-tab')).toBeVisible();
-    await expect(page.locator('h2')).toContainText('Sync Logs');
+    await expect(page.locator('#logs-tab h2')).toContainText('Sync Logs');
   });
 
   test('should navigate to Settings tab', async ({ page }) => {
@@ -84,21 +84,20 @@ test.describe('Tab Navigation', () => {
     
     // Check Settings content is visible
     await expect(page.locator('#settings-tab')).toBeVisible();
-    await expect(page.locator('h2')).toContainText('Settings');
+    await expect(page.locator('#settings-tab h2')).toContainText('Settings');
   });
 
   test('should switch between multiple tabs', async ({ page }) => {
     await page.goto('/');
-    
+
     // Navigate through tabs
     await page.click('.tab-btn[data-tab="sources"]');
     await expect(page.locator('#sources-tab')).toBeVisible();
-    
+
     await page.click('.tab-btn[data-tab="target"]');
     await expect(page.locator('#target-tab')).toBeVisible();
-    
+
     await page.click('.tab-btn[data-tab="dashboard"]');
     await expect(page.locator('#dashboard-tab')).toBeVisible();
   });
 });
-
