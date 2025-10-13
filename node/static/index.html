@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="tabs.css">
     <link rel="stylesheet" href="components.css">
     <link rel="stylesheet" href="help-panel.css">
+    <link rel="stylesheet" href="help-content-styles.css">
+    <link rel="stylesheet" href="credentials-styles.css">
+    <link rel="stylesheet" href="credentials-card-styles.css">
     <script>
         // Initialize theme immediately to prevent flash
         (function() {
@@ -107,6 +110,10 @@
             <div id="settings-tab" class="tab-content">
                 <h2>Settings</h2>
                 <div id="settings-help-container"></div>
+
+                <!-- OAuth Credentials section will be dynamically inserted here -->
+                <div id="settings-content"></div>
+
                 <div class="card">
                     <form id="settings-form">
                         <label>

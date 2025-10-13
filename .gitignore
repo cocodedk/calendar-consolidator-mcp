@@ -22,6 +22,7 @@ yarn-error.log*
 
 # Config
 .calendar-consolidator/
+.encryption_key
 
 # IDE
 .vscode/

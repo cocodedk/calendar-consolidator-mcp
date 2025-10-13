@@ -7,8 +7,8 @@ const STORAGE_PREFIX = 'help-panel-';
 export function isHelpExpanded(pageId) {
     const key = `${STORAGE_PREFIX}${pageId}-expanded`;
     const stored = localStorage.getItem(key);
-    // Default to expanded for first-time users
-    return stored === null ? true : stored === 'true';
+    // Default to collapsed
+    return stored === null ? false : stored === 'true';
 }
 
 export function setHelpExpanded(pageId, expanded) {

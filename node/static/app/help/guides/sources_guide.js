@@ -2,11 +2,24 @@
  * Sources page guide content.
  */
 
+import { oauthSetupIntro, oauthSetupConclusion } from './oauth_setup_common.js';
+import { googleOAuthSetup } from './google_oauth_setup.js';
+import { microsoftOAuthSetup } from './microsoft_oauth_setup.js';
+import { icloudOAuthSetup } from './icloud_oauth_setup.js';
+
 export const sourcesGuide = `
 <div class="guide-section">
     <h3>📚 About Source Calendars</h3>
     <p>Sources are the calendars you want to sync FROM. Think of them as the
     calendars that contain events you want to see in your consolidated view.</p>
+</div>
+
+<div class="guide-section">
+    <h4>⚙️ First-Time Setup Required</h4>
+    <p class="help-warning">⚠️ <strong>Before Adding Sources:</strong> You must configure
+    OAuth credentials for each calendar provider you want to use. This is a one-time setup.</p>
+    <p>See the <strong>"OAuth Setup"</strong> section below for detailed instructions for
+    Google, Microsoft, and iCloud.</p>
 </div>
 
 <div class="guide-section">
@@ -62,4 +75,10 @@ export const sourcesGuide = `
     <p><strong>Family Calendars:</strong> Add calendars from multiple family members
     to coordinate schedules.</p>
 </div>
+
+${oauthSetupIntro}
+${googleOAuthSetup}
+${microsoftOAuthSetup}
+${icloudOAuthSetup}
+${oauthSetupConclusion}
 `;
