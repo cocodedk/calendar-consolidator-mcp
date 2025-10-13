@@ -1,0 +1,89 @@
+/* Component Styles - Cards, Buttons, Forms */
+
+.card {
+    background: var(--bg-card);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px var(--shadow);
+}
+
+.card h3 {
+    margin-bottom: 15px;
+    color: var(--accent-primary);
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 10px;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: var(--accent-primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--accent-primary-hover);
+}
+
+.btn-secondary {
+    background: var(--accent-secondary);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: var(--accent-secondary-hover);
+}
+
+.stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.stat:last-child {
+    border-bottom: none;
+}
+
+.logs-container {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.log-entry {
+    padding: 10px;
+    border-left: 3px solid var(--accent-primary);
+    margin-bottom: 10px;
+    background: var(--log-bg);
+}
+
+.log-entry.error {
+    border-left-color: var(--error-color);
+}
+
+form label {
+    display: block;
+    margin-bottom: 15px;
+    color: var(--text-primary);
+}
+
+form input[type="number"] {
+    width: 100px;
+    margin-left: 10px;
+    padding: 5px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 4px;
+}
+
+form input[type="checkbox"] {
+    cursor: pointer;
+}
