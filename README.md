@@ -130,12 +130,21 @@ See [LICENSE](LICENSE) file for details.
 **Phase 0 - MVP Development** ✅
 - Core database and state management
 - Microsoft Graph connector
-- Sync engine (once + preview)
+- Google Calendar connector
+- iCloud CalDAV connector
+- Sync engine (manual sync + preview)
 - MCP server with tools
-- Basic web UI
+- Comprehensive web UI with dark mode
+- OAuth credentials management
+
+**Feature Implementation**:
+- ✅ **CalDAV Support**: Fully implemented with iCloud connector
+- ✅ **OAuth Flow UI**: Complete device code flow with session management
+- ⚠️ **Error Handling**: Basic logging implemented, retry logic needs development
+- ❌ **Continuous Sync Scheduler**: Database schema ready, scheduler module not yet built
 
 **Coming Next**:
-- CalDAV support
-- Continuous sync scheduler
-- Advanced error handling
-- OAuth flow UI integration
+- Continuous sync scheduler with configurable intervals
+- Advanced error handling with exponential backoff and retry logic
+- Additional CalDAV providers (Nextcloud, etc.)
+- Conflict resolution strategies
