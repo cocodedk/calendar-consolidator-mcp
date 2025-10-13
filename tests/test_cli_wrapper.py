@@ -32,7 +32,8 @@ def test_cli_wrapper_calls_function():
             mock_module.test_func = mock_func
             mock_import.return_value = mock_module
 
-            with patch('builtins.print') as mock_print:
+            # Patch print in both the module and builtins
+            with patch('python.cli_wrapper.print') as mock_print:
                 cli_wrapper.main()
                 mock_func.assert_called_once_with(arg1="value1")
                 # Verify JSON output
@@ -50,11 +51,12 @@ def test_cli_wrapper_handles_exception():
         with patch('python.cli_wrapper.importlib.import_module') as mock_import:
             mock_import.side_effect = ModuleNotFoundError("Module not found")
 
-            with patch('builtins.print') as mock_print:  # Capture error output
+            # Patch print in the module
+            with patch('python.cli_wrapper.print') as mock_print:
                 with pytest.raises(SystemExit) as exc_info:
                     cli_wrapper.main()
                 assert exc_info.value.code == 1
-                # Verify error was printed to stderr
+                # Verify error was printed
                 assert mock_print.called
 
 

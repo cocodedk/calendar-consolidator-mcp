@@ -21,7 +21,7 @@ def db_with_many_mappings():
 
         # Create a source first (required by foreign key constraint)
         source_store = SourceStore(db)
-        source_store.add('graph', 'test-calendar', 'Test', b'creds')
+        source_store.add('graph', 'test-calendar', 'Test', {'access_token': 'test'})
 
         cursor = db.conn.cursor()
 
@@ -74,7 +74,7 @@ def test_bulk_insert_mappings():
 
         # Create a source first (required by foreign key constraint)
         source_store = SourceStore(db)
-        source_store.add('graph', 'test-calendar', 'Test', b'creds')
+        source_store.add('graph', 'test-calendar', 'Test', {'access_token': 'test'})
 
         store = MappingStore(db)
 
@@ -92,7 +92,7 @@ def test_bulk_insert_mappings():
 def test_query_with_index_performance():
     """Indexed queries are fast."""
     from python.state.source_store import SourceStore
-    
+
     with tempfile.TemporaryDirectory() as tmpdir:
         db_path = Path(tmpdir) / "test.db"
         db = Database(str(db_path))
@@ -101,7 +101,7 @@ def test_query_with_index_performance():
 
         # Create a source first (required by foreign key constraint)
         source_store = SourceStore(db)
-        source_store.add('graph', 'test-calendar', 'Test', b'creds')
+        source_store.add('graph', 'test-calendar', 'Test', {'access_token': 'test'})
 
         cursor = db.conn.cursor()
 
