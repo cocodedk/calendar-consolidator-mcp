@@ -39,7 +39,7 @@ def mock_config_multi_source():
     return config
 
 
-@patch('python.sync.syncer.GraphConnector')
+@patch('python.connectors.GraphConnector')
 def test_sync_all_sources_aggregates_events(mock_connector_class, mock_config_multi_source):
     """Syncing all sources aggregates events from each source."""
     # Mock connectors for each source

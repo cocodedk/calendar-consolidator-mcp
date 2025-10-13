@@ -5,7 +5,7 @@ from unittest.mock import Mock, patch
 from python.sync.syncer import Syncer
 
 
-@patch('python.sync.syncer.GraphConnector')
+@patch('python.connectors.GraphConnector')
 def test_syncer_handles_missing_source(mock_graph_connector):
     """Test Syncer handles missing source configuration."""
     mock_config = Mock()
@@ -18,7 +18,7 @@ def test_syncer_handles_missing_source(mock_graph_connector):
         syncer.sync_once(999)
 
 
-@patch('python.sync.syncer.GraphConnector')
+@patch('python.connectors.GraphConnector')
 def test_syncer_handles_missing_target(mock_graph_connector):
     """Test Syncer handles missing target configuration."""
     mock_config = Mock()
@@ -31,7 +31,7 @@ def test_syncer_handles_missing_target(mock_graph_connector):
         syncer.sync_once(1)
 
 
-@patch('python.sync.syncer.GraphConnector')
+@patch('python.connectors.GraphConnector')
 def test_syncer_logs_error_on_exception(mock_graph_connector):
     """Test Syncer logs errors when sync fails."""
     mock_connector = Mock()

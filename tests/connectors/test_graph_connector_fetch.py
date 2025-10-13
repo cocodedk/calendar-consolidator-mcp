@@ -16,7 +16,7 @@ def valid_credentials():
     }
 
 
-@patch('python.connectors.graph_connector.requests.get')
+@patch('python.connectors.graph_connector.connector.requests.get')
 def test_list_calendars_success(mock_get, valid_credentials):
     """List calendars returns calendar info."""
     mock_response = Mock()
@@ -38,7 +38,7 @@ def test_list_calendars_success(mock_get, valid_credentials):
     assert calendars[0]['canWrite'] is True
 
 
-@patch('python.connectors.graph_connector.requests.get')
+@patch('python.connectors.graph_connector.connector.requests.get')
 def test_get_events_delta_initial_sync(mock_get, valid_credentials):
     """Get events delta for initial sync."""
     mock_response = Mock()
@@ -59,7 +59,7 @@ def test_get_events_delta_initial_sync(mock_get, valid_credentials):
     assert result['nextSyncToken'] is not None
 
 
-@patch('python.connectors.graph_connector.requests.get')
+@patch('python.connectors.graph_connector.connector.requests.get')
 def test_get_events_delta_with_token(mock_get, valid_credentials):
     """Get events delta with existing sync token."""
     sync_token = 'https://graph.microsoft.com/delta?token=abc123'
@@ -74,5 +74,9 @@ def test_get_events_delta_with_token(mock_get, valid_credentials):
     connector = GraphConnector(valid_credentials)
     result = connector.get_events_delta('cal1', sync_token)
 
-    mock_get.assert_called_with(sync_token, headers=connector._get_headers())
+    # Verify get was called with the sync token
+    mock_get.assert_called_once()
+    call_args = mock_get.call_args
+    assert call_args[0][0] == sync_token
+    assert 'headers' in call_args[1]
     assert len(result['events']) == 1

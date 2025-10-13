@@ -41,8 +41,9 @@ def test_auth_flow_to_connector_creation(mock_app_class):
     assert connector.credentials['access_token'] == 'access_token_123'
 
 
-@patch('python.connectors.graph_connector.requests.get')
-def test_expired_token_auto_refresh_during_sync(mock_get):
+@patch('python.connectors.graph_connector.token_manager.GraphTokenManager.refresh_if_needed')
+@patch('python.connectors.graph_connector.connector.requests.get')
+def test_expired_token_auto_refresh_during_sync(mock_get, mock_refresh):
     """Expired token is refreshed automatically during sync."""
     from python.connectors.graph_connector import GraphConnector
 
@@ -53,9 +54,8 @@ def test_expired_token_auto_refresh_during_sync(mock_get):
         'expires_at': (datetime.utcnow() - timedelta(minutes=10)).isoformat()
     }
 
-    with patch.object(GraphConnector, '_refresh_token') as mock_refresh:
-        connector = GraphConnector(expired_creds)
-        mock_refresh.assert_called_once()
+    connector = GraphConnector(expired_creds)
+    mock_refresh.assert_called_once()
 
 
 def test_auth_credentials_stored_encrypted():

@@ -32,7 +32,7 @@ def sample_event_data():
     }
 
 
-@patch('python.connectors.graph_connector.requests.post')
+@patch('python.connectors.graph_connector.connector.requests.post')
 def test_create_event_success(mock_post, valid_credentials, sample_event_data):
     """Create event returns event ID."""
     mock_response = Mock()
@@ -47,7 +47,7 @@ def test_create_event_success(mock_post, valid_credentials, sample_event_data):
     mock_post.assert_called_once()
 
 
-@patch('python.connectors.graph_connector.requests.post')
+@patch('python.connectors.graph_connector.connector.requests.post')
 def test_create_event_with_headers(mock_post, valid_credentials, sample_event_data):
     """Create event includes proper headers."""
     mock_response = Mock()

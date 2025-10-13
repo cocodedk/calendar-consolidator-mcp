@@ -16,7 +16,7 @@ def valid_credentials():
     }
 
 
-@patch('python.connectors.graph_connector.requests.patch')
+@patch('python.connectors.graph_connector.connector.requests.patch')
 def test_update_event_success(mock_patch, valid_credentials):
     """Update event modifies existing event."""
     mock_response = Mock()
@@ -32,7 +32,7 @@ def test_update_event_success(mock_patch, valid_credentials):
     assert 'event123' in call_args[0][0]
 
 
-@patch('python.connectors.graph_connector.requests.get')
+@patch('python.connectors.graph_connector.connector.requests.get')
 def test_get_event_success(mock_get, valid_credentials):
     """Get event returns event data."""
     mock_response = Mock()
@@ -53,7 +53,7 @@ def test_get_event_success(mock_get, valid_credentials):
     assert event['subject'] == 'Meeting'
 
 
-@patch('python.connectors.graph_connector.requests.get')
+@patch('python.connectors.graph_connector.connector.requests.get')
 def test_get_event_not_found(mock_get, valid_credentials):
     """Get event returns None for missing event."""
     mock_response = Mock()

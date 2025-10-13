@@ -13,7 +13,7 @@ def test_encryption_uses_keyring():
     with patch('python.state.encryption.keyring') as mock_keyring:
         mock_keyring.get_password.return_value = None
 
-        blob = store_credentials('service', 'user', credentials)
+        store_credentials('user_id', credentials)
 
         # Should have stored key in keyring
         mock_keyring.set_password.assert_called()

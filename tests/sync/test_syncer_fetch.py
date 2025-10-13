@@ -7,7 +7,7 @@ from python.sync.syncer import Syncer
 from python.model.event import Event
 
 
-@patch('python.sync.syncer.GraphConnector')
+@patch('python.connectors.GraphConnector')
 def test_syncer_get_connector_graph(mock_graph_connector):
     """Test getting GraphConnector instance."""
     mock_config = Mock()
@@ -30,7 +30,7 @@ def test_syncer_get_connector_unsupported():
         syncer._get_connector(config)
 
 
-@patch('python.sync.syncer.GraphConnector')
+@patch('python.connectors.GraphConnector')
 def test_syncer_fetches_events(mock_graph_connector):
     """Test Syncer fetches events from source."""
     mock_connector = Mock()

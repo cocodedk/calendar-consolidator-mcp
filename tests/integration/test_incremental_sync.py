@@ -17,7 +17,7 @@ def mock_config_with_token():
     return config
 
 
-@patch('python.sync.syncer.GraphConnector')
+@patch('python.connectors.GraphConnector')
 def test_initial_sync_stores_token(mock_connector_class, mock_config_with_token):
     """Initial sync stores delta token for next sync."""
     mock_source = Mock()
@@ -58,7 +58,7 @@ def test_initial_sync_stores_token(mock_connector_class, mock_config_with_token)
     mock_config_with_token.sources.update_token.assert_called_once()
 
 
-@patch('python.sync.syncer.GraphConnector')
+@patch('python.connectors.GraphConnector')
 def test_incremental_sync_uses_token(mock_connector_class, mock_config_with_token):
     """Incremental sync uses stored delta token."""
     existing_token = 'https://graph.microsoft.com/delta?token=previous'
@@ -94,7 +94,7 @@ def test_incremental_sync_uses_token(mock_connector_class, mock_config_with_toke
     mock_source.get_events_delta.assert_called_with('cal1', existing_token)
 
 
-@patch('python.sync.syncer.GraphConnector')
+@patch('python.connectors.GraphConnector')
 def test_incremental_sync_only_processes_changes(mock_connector_class, mock_config_with_token):
     """Incremental sync only processes changed events."""
     mock_source = Mock()

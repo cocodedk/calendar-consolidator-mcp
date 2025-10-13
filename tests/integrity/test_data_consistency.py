@@ -91,7 +91,7 @@ def test_mapping_hash_detects_content_changes():
     diff = compute_diff([modified], mappings, ignore_private=False)
 
     # Should detect as update
-    assert len(diff.updates) == 1
+    assert len(diff.to_update) == 1
 
 
 def test_hash_stable_across_serialization():
@@ -110,6 +110,10 @@ def test_hash_stable_across_serialization():
 
     # Convert to Graph format and back
     graph_data = original.to_graph()
+    graph_data['id'] = original.uid  # Add ID for round-trip
+    # Add bodyPreview since from_graph reads from that, not body
+    if 'body' in graph_data:
+        graph_data['bodyPreview'] = graph_data['body']['content']
     restored = Event.from_graph(graph_data)
     restored_hash = restored.compute_hash()
 

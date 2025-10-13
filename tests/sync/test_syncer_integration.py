@@ -7,7 +7,7 @@ from python.sync.syncer import Syncer
 from python.model.event import Event
 
 
-@patch('python.sync.syncer.GraphConnector')
+@patch('python.connectors.GraphConnector')
 def test_syncer_full_sync_flow(mock_graph_connector):
     """Test complete sync_once flow with mocked components."""
     # Setup mock connector
@@ -50,7 +50,7 @@ def test_syncer_full_sync_flow(mock_graph_connector):
     mock_config.logs.log_sync.assert_called_once()
 
 
-@patch('python.sync.syncer.GraphConnector')
+@patch('python.connectors.GraphConnector')
 def test_syncer_sync_with_no_changes(mock_graph_connector):
     """Test sync when no changes detected."""
     mock_connector = Mock()

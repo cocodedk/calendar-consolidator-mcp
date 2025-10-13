@@ -17,7 +17,7 @@ def valid_credentials():
     }
 
 
-@patch('python.connectors.graph_connector.requests.get')
+@patch('python.connectors.graph_connector.connector.requests.get')
 def test_api_error_401_unauthorized(mock_get, valid_credentials):
     """API raises exception on 401 unauthorized."""
     mock_response = Mock()
@@ -30,7 +30,7 @@ def test_api_error_401_unauthorized(mock_get, valid_credentials):
         connector.list_calendars()
 
 
-@patch('python.connectors.graph_connector.requests.get')
+@patch('python.connectors.graph_connector.connector.requests.get')
 def test_api_error_429_rate_limit(mock_get, valid_credentials):
     """API raises exception on 429 rate limit."""
     mock_response = Mock()
@@ -43,7 +43,7 @@ def test_api_error_429_rate_limit(mock_get, valid_credentials):
         connector.get_events_delta('cal1')
 
 
-@patch('python.connectors.graph_connector.requests.post')
+@patch('python.connectors.graph_connector.connector.requests.post')
 def test_api_error_500_server_error(mock_post, valid_credentials):
     """API raises exception on 500 server error."""
     mock_response = Mock()
@@ -56,8 +56,9 @@ def test_api_error_500_server_error(mock_post, valid_credentials):
         connector.create_event('cal1', {'subject': 'Test'})
 
 
-@patch('python.connectors.graph_connector.requests.get')
-def test_expired_token_refreshes_automatically(mock_get, valid_credentials):
+@patch('python.connectors.graph_connector.token_manager.GraphTokenManager.refresh_if_needed')
+@patch('python.connectors.graph_connector.connector.requests.get')
+def test_expired_token_refreshes_automatically(mock_get, mock_refresh, valid_credentials):
     """Expired token triggers automatic refresh before API call."""
     expired_creds = {
         'access_token': 'old_token',
@@ -65,6 +66,5 @@ def test_expired_token_refreshes_automatically(mock_get, valid_credentials):
         'expires_at': (datetime.utcnow() - timedelta(minutes=10)).isoformat()
     }
 
-    with patch.object(GraphConnector, '_refresh_token') as mock_refresh:
-        connector = GraphConnector(expired_creds)
-        mock_refresh.assert_called_once()
+    connector = GraphConnector(expired_creds)
+    mock_refresh.assert_called_once()

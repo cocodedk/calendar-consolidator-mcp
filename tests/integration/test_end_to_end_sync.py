@@ -40,7 +40,7 @@ def sample_graph_events():
     ]
 
 
-@patch('python.sync.syncer.GraphConnector')
+@patch('python.connectors.GraphConnector')
 def test_end_to_end_initial_sync(mock_connector_class, mock_config_store, sample_graph_events):
     """Complete initial sync flow: fetch, diff, create events."""
     # Setup mocks

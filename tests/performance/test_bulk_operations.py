@@ -37,7 +37,7 @@ def test_compute_diff_with_100_events(bulk_events):
     diff = compute_diff(bulk_events, {}, ignore_private=False)
     elapsed = time.time() - start
 
-    assert len(diff.creates) == 100
+    assert len(diff.to_create) == 100
     assert elapsed < 5.0  # Should complete in under 5 seconds
 
 

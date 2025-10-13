@@ -16,7 +16,7 @@ def valid_credentials():
     }
 
 
-@patch('python.connectors.graph_connector.requests.delete')
+@patch('python.connectors.graph_connector.connector.requests.delete')
 def test_delete_event_success(mock_delete, valid_credentials):
     """Delete event removes event from calendar."""
     mock_response = Mock()
@@ -31,7 +31,7 @@ def test_delete_event_success(mock_delete, valid_credentials):
     assert 'event123' in call_args[0][0]
 
 
-@patch('python.connectors.graph_connector.requests.delete')
+@patch('python.connectors.graph_connector.connector.requests.delete')
 def test_delete_event_with_auth(mock_delete, valid_credentials):
     """Delete event includes authorization header."""
     mock_response = Mock()
@@ -46,7 +46,7 @@ def test_delete_event_with_auth(mock_delete, valid_credentials):
     assert 'Bearer access123' in headers['Authorization']
 
 
-@patch('python.connectors.graph_connector.requests.delete')
+@patch('python.connectors.graph_connector.connector.requests.delete')
 def test_delete_event_raises_on_error(mock_delete, valid_credentials):
     """Delete event raises exception on API error."""
     mock_response = Mock()

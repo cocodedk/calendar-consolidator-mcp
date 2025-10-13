@@ -17,7 +17,7 @@ def test_credentials_not_in_error_messages():
         'expires_at': (datetime.utcnow() + timedelta(hours=1)).isoformat()
     }
 
-    with patch('python.connectors.graph_connector.requests.get') as mock_get:
+    with patch('python.connectors.graph_connector.connector.requests.get') as mock_get:
         mock_response = Mock()
         mock_response.raise_for_status.side_effect = requests.HTTPError("API Error")
         mock_get.return_value = mock_response

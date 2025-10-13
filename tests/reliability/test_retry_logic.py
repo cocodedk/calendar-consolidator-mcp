@@ -16,7 +16,7 @@ def test_connector_retries_on_network_error():
         'expires_at': (datetime.utcnow() + timedelta(hours=1)).isoformat()
     }
 
-    with patch('python.connectors.graph_connector.requests.get') as mock_get:
+    with patch('python.connectors.graph_connector.connector.requests.get') as mock_get:
         # First call fails, second succeeds
         mock_get.side_effect = [
             requests.ConnectionError("Network error"),
@@ -95,7 +95,7 @@ def test_no_retry_on_client_error():
         'expires_at': (datetime.utcnow() + timedelta(hours=1)).isoformat()
     }
 
-    with patch('python.connectors.graph_connector.requests.get') as mock_get:
+    with patch('python.connectors.graph_connector.connector.requests.get') as mock_get:
         mock_response = Mock()
         mock_response.status_code = 400
         mock_response.raise_for_status.side_effect = requests.HTTPError("400 Bad Request")
