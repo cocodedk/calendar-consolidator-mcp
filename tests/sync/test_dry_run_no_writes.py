@@ -19,7 +19,7 @@ def test_dry_run_no_database_writes(mock_graph_connector):
         'nextSyncToken': 'token'
     }
     mock_graph_connector.return_value = mock_connector
-    
+
     mock_config = Mock()
     mock_config.sources.get.return_value = {
         'type': 'graph', 'calendar_id': 'cal-1',
@@ -31,19 +31,18 @@ def test_dry_run_no_database_writes(mock_graph_connector):
     }
     mock_config.mappings.get_all_for_source.return_value = []
     mock_config.settings.get_bool.return_value = False
-    
+
     syncer = DryRunSyncer(mock_config)
     result = syncer.preview_sync(1)
-    
+
     # Verify no create/update/delete calls to connector
     assert not mock_connector.create_event.called
     assert not mock_connector.update_event.called
     assert not mock_connector.delete_event.called
-    
+
     # Verify no mapping writes
     assert not mock_config.mappings.create.called
     assert not mock_config.mappings.update_hash.called
-    
+
     # Verify no token updates
     assert not mock_config.sources.update_token.called
-

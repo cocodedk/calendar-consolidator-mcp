@@ -10,10 +10,10 @@ def test_dry_run_all_sources_empty(mock_graph_connector):
     """Test preview all sources with no active sources."""
     mock_config = Mock()
     mock_config.sources.get_active.return_value = []
-    
+
     syncer = DryRunSyncer(mock_config)
     result = syncer.preview_all_sources()
-    
+
     assert result['wouldCreate'] == 0
     assert result['wouldUpdate'] == 0
     assert result['wouldDelete'] == 0
@@ -28,7 +28,7 @@ def test_dry_run_all_sources_multiple(mock_graph_connector):
         'nextSyncToken': 'token'
     }
     mock_graph_connector.return_value = mock_connector
-    
+
     mock_config = Mock()
     source1 = {'id': 1, 'type': 'graph', 'calendar_id': 'cal-1', 'credentials': {}}
     source2 = {'id': 2, 'type': 'graph', 'calendar_id': 'cal-2', 'credentials': {}}
@@ -39,10 +39,9 @@ def test_dry_run_all_sources_multiple(mock_graph_connector):
     }
     mock_config.mappings.get_all_for_source.return_value = []
     mock_config.settings.get_bool.return_value = False
-    
+
     syncer = DryRunSyncer(mock_config)
     result = syncer.preview_all_sources()
-    
+
     assert 'wouldCreate' in result
     assert 'sampleEvents' in result
-
