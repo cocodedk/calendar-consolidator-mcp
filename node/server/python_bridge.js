@@ -67,15 +67,20 @@ export async function executePython(scriptPath, args = []) {
  * @param {string} module - Python module path (e.g., 'python.sync.syncer')
  * @param {string} func - Function name
  * @param {object} params - Parameters as JSON
+ * @param {string} className - Optional class name (if calling class method)
  * @returns {Promise<any>} - Result from Python function
  */
-export async function callPythonFunction(module, func, params = {}) {
+export async function callPythonFunction(module, func, params = {}, className = null) {
   const scriptPath = path.join(__dirname, '../../python/cli_wrapper.py');
   const args = [
     '--module', module,
     '--function', func,
     '--params', JSON.stringify(params)
   ];
+
+  if (className) {
+    args.push('--class', className);
+  }
 
   return executePython(scriptPath, args);
 }

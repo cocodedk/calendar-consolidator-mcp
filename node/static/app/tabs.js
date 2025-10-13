@@ -23,4 +23,5 @@ function switchTab(tabName, callbacks) {
     if (tabName === 'sources' && callbacks.loadSources) callbacks.loadSources();
     if (tabName === 'target' && callbacks.loadTarget) callbacks.loadTarget();
     if (tabName === 'logs' && callbacks.loadLogs) callbacks.loadLogs();
+    if (tabName === 'settings' && callbacks.loadSettings) callbacks.loadSettings();
 }

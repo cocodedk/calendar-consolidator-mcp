@@ -24,6 +24,9 @@ def get_connector(config: Dict[str, Any]):
     elif config['type'] == 'google':
         from ...connectors import GoogleConnector
         return GoogleConnector(config['credentials'])
+    elif config['type'] == 'icloud':
+        from ...connectors.icloud_connector import ICloudConnector
+        return ICloudConnector(config['credentials'])
     else:
         raise NotImplementedError(
             f"Connector type {config['type']} not implemented"

@@ -10,13 +10,13 @@ import { callPythonFunction } from '../python_bridge.js';
  */
 export const listCalendarsTool = {
   name: 'listCalendars',
-  description: 'List available calendars from Microsoft Graph, Google, or CalDAV',
+  description: 'List available calendars from Microsoft Graph, Google, iCloud, or CalDAV',
   inputSchema: {
     type: 'object',
     properties: {
       sourceType: {
         type: 'string',
-        enum: ['graph', 'google', 'caldav'],
+        enum: ['graph', 'google', 'icloud', 'caldav'],
         description: 'Calendar source type'
       },
       credentials: {
@@ -34,6 +34,8 @@ export const listCalendarsTool = {
         connectorModule = 'python.connectors.graph_connector';
       } else if (params.sourceType === 'google') {
         connectorModule = 'python.connectors.google_connector';
+      } else if (params.sourceType === 'icloud') {
+        connectorModule = 'python.connectors.icloud_connector';
       } else if (params.sourceType === 'caldav') {
         connectorModule = 'python.connectors.caldav_connector';
       } else {

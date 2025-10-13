@@ -3,8 +3,20 @@
  */
 
 import { showError } from './utils.js';
+import { createHelpPanel } from './help/index.js';
+
+let helpInitialized = false;
+
+function initializeHelp() {
+    if (!helpInitialized) {
+        createHelpPanel('sync', 'sync-help-container');
+        helpInitialized = true;
+    }
+}
 
 export async function previewSync() {
+    initializeHelp();
+
     try {
         const result = await API.previewSync();
         const container = document.getElementById('sync-preview');
@@ -25,6 +37,8 @@ function renderPreview(result) {
 }
 
 export async function executeSync(callbacks) {
+    initializeHelp();
+
     if (!confirm('Execute sync now?')) return;
 
     try {

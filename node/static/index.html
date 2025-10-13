@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="tabs.css">
     <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="help-panel.css">
     <script>
         // Initialize theme immediately to prevent flash
         (function() {
@@ -46,6 +47,7 @@
             <!-- Dashboard Tab -->
             <div id="dashboard-tab" class="tab-content active">
                 <h2>Dashboard</h2>
+                <div id="dashboard-help-container"></div>
                 <div class="card">
                     <h3>System Status</h3>
                     <div id="dashboard-stats">
@@ -69,6 +71,7 @@
             <!-- Sources Tab -->
             <div id="sources-tab" class="tab-content">
                 <h2>Source Calendars</h2>
+                <div id="sources-help-container"></div>
                 <button class="btn btn-primary" onclick="showAddSource()">+ Add Source</button>
                 <div id="sources-list" class="card-list"></div>
             </div>
@@ -76,6 +79,7 @@
             <!-- Target Tab -->
             <div id="target-tab" class="tab-content">
                 <h2>Target Calendar</h2>
+                <div id="target-help-container"></div>
                 <div id="target-info" class="card"></div>
                 <button class="btn btn-primary" onclick="showSetTarget()">Set Target</button>
             </div>
@@ -83,6 +87,7 @@
             <!-- Sync Tab -->
             <div id="sync-tab" class="tab-content">
                 <h2>Sync Operations</h2>
+                <div id="sync-help-container"></div>
                 <div class="card">
                     <button class="btn btn-secondary" onclick="previewSync()">Preview Sync</button>
                     <button class="btn btn-primary" onclick="executeSync()">Sync Now</button>
@@ -93,6 +98,7 @@
             <!-- Logs Tab -->
             <div id="logs-tab" class="tab-content">
                 <h2>Sync Logs</h2>
+                <div id="logs-help-container"></div>
                 <button class="btn" onclick="loadLogs()">Refresh</button>
                 <div id="logs-list" class="logs-container"></div>
             </div>
@@ -100,6 +106,7 @@
             <!-- Settings Tab -->
             <div id="settings-tab" class="tab-content">
                 <h2>Settings</h2>
+                <div id="settings-help-container"></div>
                 <div class="card">
                     <form id="settings-form">
                         <label>
@@ -120,6 +127,9 @@
             </div>
         </main>
     </div>
+
+    <!-- Modal container for overlays -->
+    <div id="modal-container"></div>
 
     <script type="module" src="app/theme.js"></script>
     <script type="module" src="api.js"></script>
