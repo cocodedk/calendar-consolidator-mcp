@@ -1,20 +1,23 @@
 # Pytest Suite - Complete ✅
 
 ## Summary
-- **81 tests** created across 27 files
-- **100% passing** (81/81)
-- **62% code coverage** of core modules
+- **138 tests** created across 38 files
+- **100% passing** (138/138)
+- **75% code coverage** of core modules
 - **All files < 100 lines** (36-82 lines each)
 
 ## Test Coverage
 - **Model** (8 files): Event creation, conversion, hashing, diff logic
-- **State** (13 files): Database, encryption, stores (source/mapping)
-- **Sync** (7 files): Syncer operations, error handling, integration
+- **State** (20 files): Database, encryption, all stores (source/mapping/target/log/settings)
+- **Sync** (10 files): Syncer operations, dry-run, error handling, integration
+- **Connectors** (1 file): Base connector interface
 
 ## Key Achievements
-✅ **100% coverage**: diff.py, mapping_store.py, source_store.py
+✅ **100% coverage**: diff.py, mapping_store.py, source_store.py, target_store.py, log_store.py
 ✅ **95% coverage**: syncer.py
 ✅ **96% coverage**: encryption.py
+✅ **94% coverage**: dry_run_syncer.py
+✅ **88% coverage**: settings_store.py
 ✅ All external dependencies mocked (keyring, sqlite3, Graph API)
 
 ## Run Tests
@@ -28,16 +31,17 @@ pytest --cov=python       # With coverage
 ```
 
 ## Files Created
-- 27 test files (tests/model/, tests/state/, tests/sync/)
+- 38 test files (tests/model/, tests/state/, tests/sync/, tests/connectors/)
 - 1 conftest.py (shared fixtures)
 - 1 pytest.ini (configuration)
 - 1 run_tests.sh (test runner script)
 - Tests README in tests/
+- Directory structure for future tests (integration/, validation/, etc.)
 
 ## Next Steps
 Add tests for:
+- Graph connector methods (Phase 2)
 - CalDAV connector (Phase 2)
-- Log store
-- Settings store
-- Target store
-- Dry-run syncer
+- Integration tests (end-to-end flows)
+- Validation tests (edge cases)
+- Performance tests (bulk operations)

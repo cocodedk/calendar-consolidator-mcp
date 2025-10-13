@@ -45,3 +45,6 @@ logs/
 # Temporary
 tmp/
 temp/
+
+# HTML coverage
+htmlcov/
