@@ -7,12 +7,12 @@ MCP tools expose calendar sync functionality to AI/agents
 
 ### listCalendars
 ```typescript
-listCalendars(sourceType: "graph" | "caldav") → CalendarInfo[]
+listCalendars(sourceType: "graph" | "google" | "caldav") → CalendarInfo[]
 ```
 **Description**: List available calendars for a source type
 
 **Parameters**:
-- `sourceType`: Type of calendar provider
+- `sourceType`: Type of calendar provider (graph, google, or caldav)
 
 **Returns**: Array of calendar information objects
 
@@ -24,9 +24,20 @@ listCalendars(sourceType: "graph" | "caldav") → CalendarInfo[]
     "name": "Work Calendar",
     "type": "graph",
     "canWrite": true
+  },
+  {
+    "id": "user@gmail.com",
+    "name": "Personal Calendar",
+    "type": "google",
+    "canWrite": true
   }
 ]
 ```
+
+**Authentication**:
+- **Microsoft Graph**: Uses device code flow with Azure AD
+- **Google Calendar**: Uses OAuth 2.0 device code flow
+- **CalDAV**: Uses basic authentication or app-specific passwords
 
 ### getEvent
 ```typescript

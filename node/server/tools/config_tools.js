@@ -10,13 +10,13 @@ import { callPythonFunction } from '../python_bridge.js';
  */
 export const listCalendarsTool = {
   name: 'listCalendars',
-  description: 'List available calendars from Microsoft Graph or CalDAV',
+  description: 'List available calendars from Microsoft Graph, Google, or CalDAV',
   inputSchema: {
     type: 'object',
     properties: {
       sourceType: {
         type: 'string',
-        enum: ['graph', 'caldav'],
+        enum: ['graph', 'google', 'caldav'],
         description: 'Calendar source type'
       },
       credentials: {
@@ -29,8 +29,19 @@ export const listCalendarsTool = {
 
   async handler(params) {
     try {
+      let connectorModule;
+      if (params.sourceType === 'graph') {
+        connectorModule = 'python.connectors.graph_connector';
+      } else if (params.sourceType === 'google') {
+        connectorModule = 'python.connectors.google_connector';
+      } else if (params.sourceType === 'caldav') {
+        connectorModule = 'python.connectors.caldav_connector';
+      } else {
+        throw new Error(`Unsupported source type: ${params.sourceType}`);
+      }
+
       const result = await callPythonFunction(
-        'python.connectors.graph_connector',
+        connectorModule,
         'list_calendars',
         { credentials: params.credentials }
       );

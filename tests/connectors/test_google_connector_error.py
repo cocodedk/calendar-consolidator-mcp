@@ -1,0 +1,62 @@
+"""Test GoogleConnector error handling."""
+
+import pytest
+from unittest.mock import Mock, patch
+from datetime import datetime, timedelta
+from python.connectors.google_connector import GoogleConnector
+
+
+@pytest.fixture
+def valid_credentials():
+    """Valid credentials fixture."""
+    return {
+        'access_token': 'access123',
+        'refresh_token': 'refresh456',
+        'expires_at': (datetime.utcnow() + timedelta(hours=1)).isoformat()
+    }
+
+
+@pytest.fixture
+def expired_credentials():
+    """Expired credentials fixture."""
+    return {
+        'access_token': 'expired_token',
+        'refresh_token': 'refresh456',
+        'expires_at': (datetime.utcnow() - timedelta(hours=1)).isoformat()
+    }
+
+
+@patch('python.connectors.google_connector.build')
+def test_token_refresh_on_expired(mock_build, expired_credentials):
+    """Connector refreshes token when expired."""
+    with patch.object(GoogleConnector, '_refresh_token') as mock_refresh:
+        connector = GoogleConnector(expired_credentials)
+        mock_refresh.assert_called_once()
+
+
+def test_missing_refresh_token():
+    """Connector raises error when refresh token missing."""
+    credentials = {
+        'access_token': 'access123',
+        'expires_at': (datetime.utcnow() - timedelta(hours=1)).isoformat()
+    }
+
+    with pytest.raises(Exception, match="No refresh token"):
+        with patch('python.connectors.google_connector.build'):
+            connector = GoogleConnector(credentials)
+            connector._refresh_token()
+
+
+@patch('python.connectors.google_connector.build')
+def test_api_error_propagates(mock_build, valid_credentials):
+    """API errors are propagated to caller."""
+    mock_service = Mock()
+    mock_events = Mock()
+    mock_events.list().execute.side_effect = Exception("API quota exceeded")
+    mock_service.events.return_value = mock_events
+    mock_build.return_value = mock_service
+
+    connector = GoogleConnector(valid_credentials)
+    with pytest.raises(Exception, match="API quota exceeded"):
+        connector.get_events_delta('cal1')
+
