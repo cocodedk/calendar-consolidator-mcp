@@ -121,7 +121,9 @@ See `tests/` for Python tests and `tests-e2e/` for Playwright tests.
 
 ## License
 
-MIT
+MIT License - Copyright (c) 2025 Babak Bandpey - cocode.dk
+
+See [LICENSE](LICENSE) file for details.
 
 ## Status
 
