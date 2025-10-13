@@ -4,6 +4,7 @@
 
 import express from 'express';
 import { callPythonFunction } from '../python_bridge.js';
+import { getSession } from './auth_routes/session_manager.js';
 
 const router = express.Router();
 
@@ -24,11 +25,26 @@ router.get('/config', async (req, res) => {
 // Add source calendar
 router.post('/source', async (req, res) => {
   try {
-    const { type, calendarId, name, credentials } = req.body;
+    const { type, calendarId, name, credentials, sessionId } = req.body;
+
+    // If sessionId provided, retrieve credentials from session
+    let creds = credentials;
+    if (sessionId) {
+      const session = getSession(sessionId);
+      if (!session || !session.credentials) {
+        return res.status(400).json({ error: 'Invalid session or missing credentials' });
+      }
+      creds = session.credentials;
+    }
+
+    if (!creds) {
+      return res.status(400).json({ error: 'Missing credentials' });
+    }
+
     const result = await callPythonFunction(
       'python.state.source_store',
       'add',
-      { type, calendar_id: calendarId, name, credentials }
+      { type, calendar_id: calendarId, name, credentials: creds }
     );
     res.json({ success: true, sourceId: result });
   } catch (error) {

@@ -1,0 +1,104 @@
+/* Modal Styles - Part 2 */
+
+.provider-option:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+}
+
+.provider-icon {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--accent-primary);
+}
+
+.provider-name {
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+/* Auth Flow */
+.auth-flow h4 {
+    margin-bottom: 15px;
+}
+
+.auth-steps {
+    margin: 15px 0;
+    padding-left: 20px;
+}
+
+.device-code {
+    background: var(--bg-primary);
+    border: 2px solid var(--accent-primary);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.device-code code {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: var(--accent-primary);
+}
+
+.btn-copy {
+    background: var(--accent-primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-copy:hover {
+    opacity: 0.9;
+}
+
+.polling-status {
+    margin-top: 30px;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+/* Calendar Selector */
+.calendar-list {
+    max-height: 400px;
+    overflow-y: auto;
+    margin: 20px 0;
+}
+
+.calendar-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.calendar-item:hover {
+    border-color: var(--accent-primary);
+    background: var(--tab-hover);
+}
+
+.calendar-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.calendar-name {
+    flex: 1;
+    color: var(--text-primary);
+}

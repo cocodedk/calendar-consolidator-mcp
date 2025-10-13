@@ -8,13 +8,15 @@ import { loadSources, removeSource, showAddSource } from './app/sources.js';
 import { loadTarget, showSetTarget } from './app/target.js';
 import { previewSync, executeSync, quickSync } from './app/sync.js';
 import { loadLogs } from './app/logs.js';
+import { loadSettings } from './app/settings.js';
 
 // Create callbacks object
 const callbacks = {
     loadDashboard,
     loadSources,
     loadTarget,
-    loadLogs
+    loadLogs,
+    loadSettings
 };
 
 // Initialize tabs
@@ -22,7 +24,7 @@ initTabs(callbacks);
 
 // Expose global functions for onclick handlers
 window.removeSource = (sourceId) => removeSource(sourceId, callbacks);
-window.showAddSource = showAddSource;
+window.showAddSource = () => showAddSource(callbacks);
 window.showSetTarget = showSetTarget;
 window.previewSync = previewSync;
 window.executeSync = () => executeSync(callbacks);

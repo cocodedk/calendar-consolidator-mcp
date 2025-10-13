@@ -3,8 +3,17 @@
  */
 
 import { showError } from './utils.js';
+import { createHelpPanel } from './help/index.js';
+
+let helpInitialized = false;
 
 export async function loadDashboard() {
+    // Initialize help panel once
+    if (!helpInitialized) {
+        createHelpPanel('dashboard', 'dashboard-help-container');
+        helpInitialized = true;
+    }
+
     try {
         const config = await API.getConfig();
         const logs = await API.getLogs(10);

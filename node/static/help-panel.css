@@ -1,0 +1,156 @@
+/* Help Panel Styles */
+
+.help-panel {
+    margin-bottom: 20px;
+}
+
+.help-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--accent-primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.help-toggle:hover {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.help-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.help-content {
+    margin-top: 12px;
+    padding: 20px;
+    background: var(--bg-card);
+    border-radius: 8px;
+    border: 2px solid var(--accent-primary);
+    box-shadow: 0 2px 8px var(--shadow);
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+}
+
+.help-content.collapsed {
+    max-height: 0;
+    opacity: 0;
+    padding: 0 20px;
+    margin-top: 0;
+    border-width: 0;
+}
+
+.help-content.expanded {
+    max-height: 2000px;
+    opacity: 1;
+}
+
+/* Guide Section Styles */
+.guide-section {
+    margin-bottom: 20px;
+}
+
+.guide-section:last-child {
+    margin-bottom: 0;
+}
+
+.guide-section h3 {
+    color: var(--accent-primary);
+    font-size: 20px;
+    margin-bottom: 12px;
+    border-bottom: 2px solid var(--accent-primary);
+    padding-bottom: 8px;
+}
+
+.guide-section h4 {
+    color: var(--text-primary);
+    font-size: 16px;
+    margin-bottom: 10px;
+    margin-top: 16px;
+}
+
+.guide-section p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.guide-section ul,
+.guide-section ol {
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+.guide-section li {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 6px;
+}
+
+.guide-section li strong {
+    color: var(--text-primary);
+}
+
+/* Tip and Warning Boxes */
+.help-tip {
+    background: rgba(76, 175, 80, 0.1);
+    border-left: 4px solid #4CAF50;
+    padding: 12px 16px;
+    margin: 12px 0;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+[data-theme="dark"] .help-tip {
+    background: rgba(76, 175, 80, 0.15);
+}
+
+.help-warning {
+    background: rgba(255, 152, 0, 0.1);
+    border-left: 4px solid #FF9800;
+    padding: 12px 16px;
+    margin: 12px 0;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+[data-theme="dark"] .help-warning {
+    background: rgba(255, 152, 0, 0.15);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .help-content {
+        padding: 16px;
+    }
+
+    .guide-section h3 {
+        font-size: 18px;
+    }
+
+    .guide-section h4 {
+        font-size: 15px;
+    }
+
+    .guide-section ul,
+    .guide-section ol {
+        margin-left: 16px;
+    }
+}

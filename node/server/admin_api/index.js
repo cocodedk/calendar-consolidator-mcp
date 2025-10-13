@@ -7,6 +7,7 @@ import configRoutes from './config_routes.js';
 import syncRoutes from './sync_routes.js';
 import logsRoutes from './logs_routes.js';
 import settingsRoutes from './settings_routes.js';
+import authRoutes from './auth_routes/index.js';
 
 const router = express.Router();
 
@@ -15,5 +16,6 @@ router.use(configRoutes);
 router.use(syncRoutes);
 router.use(logsRoutes);
 router.use(settingsRoutes);
+router.use('/auth', authRoutes);
 
 export default router;

@@ -4,7 +4,7 @@
 -- Sources table: Store source calendar configurations
 CREATE TABLE IF NOT EXISTS sources (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  type TEXT NOT NULL CHECK (type IN ('graph', 'caldav', 'google')),
+  type TEXT NOT NULL CHECK (type IN ('graph', 'caldav', 'google', 'icloud')),
   calendar_id TEXT NOT NULL,
   name TEXT,
   cred_blob BLOB NOT NULL,
@@ -20,7 +20,7 @@ CREATE INDEX IF NOT EXISTS idx_sources_active ON sources(active);
 -- Target table: Store target calendar configuration (single row)
 CREATE TABLE IF NOT EXISTS target (
   id INTEGER PRIMARY KEY CHECK (id = 1),
-  type TEXT NOT NULL CHECK (type IN ('graph', 'caldav', 'google')),
+  type TEXT NOT NULL CHECK (type IN ('graph', 'caldav', 'google', 'icloud')),
   calendar_id TEXT NOT NULL,
   name TEXT,
   cred_blob BLOB NOT NULL,

@@ -1,5 +1,8 @@
 /* Calendar Consolidator MCP - Main Styles */
 @import url('./theme-variables.css');
+@import url('./modal-styles.css');
+@import url('./modal-styles-2.css');
+@import url('./modal-styles-3.css');
 
 * {
     margin: 0;
