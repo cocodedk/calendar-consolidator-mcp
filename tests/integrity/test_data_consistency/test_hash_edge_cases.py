@@ -54,4 +54,3 @@ def test_whitespace_in_hash():
 
     # Different whitespace should produce different hashes
     assert event1.compute_hash() != event2.compute_hash()
-

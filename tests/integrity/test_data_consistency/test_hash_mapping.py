@@ -41,4 +41,3 @@ def test_mapping_hash_detects_content_changes():
 
     # Should detect as update
     assert len(diff.to_update) == 1
-

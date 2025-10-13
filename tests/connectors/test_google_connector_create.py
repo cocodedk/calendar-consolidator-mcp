@@ -2,7 +2,7 @@
 
 import pytest
 from unittest.mock import Mock, patch
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from python.connectors.google_connector import GoogleConnector
 
 
@@ -12,7 +12,7 @@ def valid_credentials():
     return {
         'access_token': 'access123',
         'refresh_token': 'refresh456',
-        'expires_at': (datetime.utcnow() + timedelta(hours=1)).isoformat()
+        'expires_at': (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat()
     }
 
 
@@ -72,4 +72,3 @@ def test_create_event_with_attendees(mock_build, valid_credentials):
     assert event_id == 'event_456'
     call_args = mock_events.insert.call_args
     assert call_args[1]['body']['attendees'] is not None
-

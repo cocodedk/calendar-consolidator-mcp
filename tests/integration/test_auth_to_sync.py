@@ -2,7 +2,7 @@
 
 import pytest
 from unittest.mock import Mock, patch
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 
 @patch('python.connectors.graph_auth.msal.PublicClientApplication')
@@ -34,7 +34,7 @@ def test_auth_flow_to_connector_creation(mock_app_class):
     credentials = {
         'access_token': tokens['access_token'],
         'refresh_token': tokens['refresh_token'],
-        'expires_at': (datetime.utcnow() + timedelta(seconds=3600)).isoformat()
+        'expires_at': (datetime.now(timezone.utc) + timedelta(seconds=3600)).isoformat()
     }
 
     connector = GraphConnector(credentials)
@@ -51,7 +51,7 @@ def test_expired_token_auto_refresh_during_sync(mock_get, mock_refresh):
     expired_creds = {
         'access_token': 'old_token',
         'refresh_token': 'refresh_token',
-        'expires_at': (datetime.utcnow() - timedelta(minutes=10)).isoformat()
+        'expires_at': (datetime.now(timezone.utc) - timedelta(minutes=10)).isoformat()
     }
 
     connector = GraphConnector(expired_creds)

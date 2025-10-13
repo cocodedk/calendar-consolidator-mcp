@@ -29,4 +29,3 @@ def test_hash_stable_across_serialization():
 
     # Hashes should match
     assert original_hash == restored_hash
-

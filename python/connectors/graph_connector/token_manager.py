@@ -2,7 +2,7 @@
 Token management for Microsoft Graph connector.
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Dict, Any
 
 
@@ -31,7 +31,7 @@ class GraphTokenManager:
             return False
 
         expires_at = datetime.fromisoformat(self.credentials['expires_at'])
-        return datetime.utcnow() >= expires_at - timedelta(minutes=5)
+        return datetime.now(timezone.utc) >= expires_at - timedelta(minutes=5)
 
     def refresh_if_needed(self) -> None:
         """Refresh token if expired."""
@@ -47,7 +47,7 @@ class GraphTokenManager:
         result = self.auth_handler.refresh_token(refresh_token)
         self.credentials['access_token'] = result['access_token']
         self.credentials['expires_at'] = (
-            datetime.utcnow() + timedelta(seconds=result.get('expires_in', 3600))
+            datetime.now(timezone.utc) + timedelta(seconds=result.get('expires_in', 3600))
         ).isoformat()
 
     def get_headers(self) -> Dict[str, str]:

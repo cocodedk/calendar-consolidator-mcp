@@ -35,4 +35,3 @@ def test_explicit_savepoint_rollback(test_db_with_source):
     cursor.execute("SELECT COUNT(*) FROM mappings")
     count = cursor.fetchone()[0]
     assert count == 1
-

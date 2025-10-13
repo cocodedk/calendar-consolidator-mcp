@@ -38,4 +38,3 @@ def test_incremental_sync_uses_token(mock_connector_class, mock_config_with_toke
 
     # Verify connector was called with existing token
     mock_source.get_events_delta.assert_called_once_with('cal1', existing_token)
-

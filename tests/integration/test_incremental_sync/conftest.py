@@ -14,4 +14,3 @@ def mock_config_with_token():
     config.settings = Mock()
     config.logs = Mock()
     return config
-

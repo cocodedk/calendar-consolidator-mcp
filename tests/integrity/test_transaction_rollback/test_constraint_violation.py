@@ -28,4 +28,3 @@ def test_rollback_on_constraint_violation(test_db_with_source):
     cursor.execute("SELECT COUNT(*) FROM mappings")
     count = cursor.fetchone()[0]
     assert count == 1
-

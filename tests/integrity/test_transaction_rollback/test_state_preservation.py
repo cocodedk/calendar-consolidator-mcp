@@ -27,4 +27,3 @@ def test_rollback_preserves_previous_state(test_db):
     cursor.execute("SELECT value FROM settings WHERE key = 'test'")
     value = cursor.fetchone()[0]
     assert value == 'initial'
-

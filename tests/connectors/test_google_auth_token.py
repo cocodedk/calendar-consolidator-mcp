@@ -2,7 +2,7 @@
 
 import pytest
 from unittest.mock import Mock, patch
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from python.connectors.google_auth import GoogleAuthenticator
 
 
@@ -13,7 +13,7 @@ def test_refresh_token_success(mock_creds_class, mock_request):
     mock_creds = Mock()
     mock_creds.token = 'new_access_token'
     mock_creds.refresh_token = 'refresh_token_456'
-    mock_creds.expiry = datetime.utcnow() + timedelta(hours=1)
+    mock_creds.expiry = datetime.now(timezone.utc) + timedelta(hours=1)
     mock_creds_class.return_value = mock_creds
 
     auth = GoogleAuthenticator()
@@ -52,4 +52,3 @@ def test_refresh_token_failure(mock_creds_class, mock_request):
     auth = GoogleAuthenticator()
     with pytest.raises(Exception):
         auth.refresh_token('invalid_token')
-

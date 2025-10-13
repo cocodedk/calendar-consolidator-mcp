@@ -31,10 +31,10 @@ tests/integrity/test_transaction_rollback/
 
 1. **test_data_consistency.py** (173 lines)
    - Split into: hash consistency, serialization, null handling
-   
+
 2. **test_incremental_sync.py** (135 lines)
    - Split into: token storage, incremental updates, change detection
-   
+
 3. **test_partial_failures.py** (133 lines)
    - Split into: single failures, batch errors, logging, rollbacks
 
@@ -127,4 +127,3 @@ find tests -name "*.py" -exec wc -l {} \; | awk '$1 > 100 {print $1, $2}'
 - Fixtures defined in `conftest.py` are available to all tests in that directory and subdirectories
 - Test discovery works automatically for `test_*.py` files
 - No need for explicit imports in most cases
-

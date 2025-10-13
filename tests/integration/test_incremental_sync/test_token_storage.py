@@ -43,4 +43,3 @@ def test_initial_sync_stores_token(mock_connector_class, mock_config_with_token)
 
     # Verify token was stored
     mock_config_with_token.sources.update_token.assert_called_once()
-

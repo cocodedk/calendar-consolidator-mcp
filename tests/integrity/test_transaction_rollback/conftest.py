@@ -28,4 +28,3 @@ def test_db_with_source(test_db):
     """, ('graph', 'test-cal', 'Test', b'creds'))
     test_db.conn.commit()
     return test_db
-

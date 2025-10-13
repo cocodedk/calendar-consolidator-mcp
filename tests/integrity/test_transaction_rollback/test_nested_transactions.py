@@ -37,4 +37,3 @@ def test_nested_transaction_rollback(test_db):
     cursor.execute("SELECT COUNT(*) FROM mappings")
     count = cursor.fetchone()[0]
     assert count == 0
-

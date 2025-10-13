@@ -2,7 +2,7 @@
 
 import pytest
 from unittest.mock import Mock, patch
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import requests
 from python.connectors.graph_connector import GraphConnector
 
@@ -13,7 +13,7 @@ def valid_credentials():
     return {
         'access_token': 'access123',
         'refresh_token': 'refresh456',
-        'expires_at': (datetime.utcnow() + timedelta(hours=1)).isoformat()
+        'expires_at': (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat()
     }
 
 
@@ -63,7 +63,7 @@ def test_expired_token_refreshes_automatically(mock_get, mock_refresh, valid_cre
     expired_creds = {
         'access_token': 'old_token',
         'refresh_token': 'refresh456',
-        'expires_at': (datetime.utcnow() - timedelta(minutes=10)).isoformat()
+        'expires_at': (datetime.now(timezone.utc) - timedelta(minutes=10)).isoformat()
     }
 
     connector = GraphConnector(expired_creds)

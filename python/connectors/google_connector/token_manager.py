@@ -2,7 +2,7 @@
 Token validation and refresh management for Google Calendar.
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Dict, Any
 
 
@@ -31,7 +31,7 @@ class TokenManager:
             return False
 
         expires_at = datetime.fromisoformat(self.credentials['expires_at'])
-        return datetime.utcnow() >= expires_at - timedelta(minutes=5)
+        return datetime.now(timezone.utc) >= expires_at - timedelta(minutes=5)
 
     def refresh_if_needed(self) -> None:
         """Refresh token if expired."""
@@ -57,4 +57,3 @@ class TokenManager:
         """
         self.refresh_if_needed()
         return self.credentials['access_token']
-

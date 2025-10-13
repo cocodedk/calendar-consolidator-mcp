@@ -2,7 +2,7 @@
 
 import pytest
 from unittest.mock import Mock, patch, MagicMock
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from python.connectors.google_connector import GoogleConnector
 
 
@@ -12,7 +12,7 @@ def valid_credentials():
     return {
         'access_token': 'access123',
         'refresh_token': 'refresh456',
-        'expires_at': (datetime.utcnow() + timedelta(hours=1)).isoformat()
+        'expires_at': (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat()
     }
 
 
@@ -80,4 +80,3 @@ def test_get_events_delta_with_token(mock_build, valid_credentials):
 
     assert len(result['events']) == 1
     mock_events.list.assert_called_with(calendarId='cal1', syncToken=sync_token)
-

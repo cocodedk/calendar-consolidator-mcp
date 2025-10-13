@@ -43,4 +43,3 @@ def test_event_hash_changes_with_content():
     )
 
     assert event1.compute_hash() != event2.compute_hash()
-

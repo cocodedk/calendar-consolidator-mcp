@@ -64,4 +64,3 @@ def test_incremental_sync_only_processes_changes(mock_connector_class, mock_conf
     # Should process both update and create
     assert result['updated'] == 1
     assert result['created'] == 1
-

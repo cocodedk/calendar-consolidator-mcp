@@ -17,4 +17,3 @@ def sample_event():
         description='Team meeting',
         is_private=False
     )
-

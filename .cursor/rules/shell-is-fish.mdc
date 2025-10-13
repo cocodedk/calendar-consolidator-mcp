@@ -1,0 +1,4 @@
+---
+alwaysApply: true
+---
+Shell is fish. change to bash if needed. fish does not support all the commands that bash does.

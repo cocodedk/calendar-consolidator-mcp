@@ -2,7 +2,7 @@
 
 import pytest
 from unittest.mock import Mock, patch
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from python.connectors.google_connector import GoogleConnector
 
 
@@ -12,7 +12,7 @@ def valid_credentials():
     return {
         'access_token': 'access123',
         'refresh_token': 'refresh456',
-        'expires_at': (datetime.utcnow() + timedelta(hours=1)).isoformat()
+        'expires_at': (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat()
     }
 
 
@@ -22,7 +22,7 @@ def expired_credentials():
     return {
         'access_token': 'expired_token',
         'refresh_token': 'refresh456',
-        'expires_at': (datetime.utcnow() - timedelta(hours=1)).isoformat()
+        'expires_at': (datetime.now(timezone.utc) - timedelta(hours=1)).isoformat()
     }
 
 
@@ -39,7 +39,7 @@ def test_missing_refresh_token(mock_build):
     """Connector raises error when refresh token missing."""
     credentials = {
         'access_token': 'access123',
-        'expires_at': (datetime.utcnow() - timedelta(hours=1)).isoformat()
+        'expires_at': (datetime.now(timezone.utc) - timedelta(hours=1)).isoformat()
     }
 
     with pytest.raises(Exception, match="No refresh token"):
@@ -58,4 +58,3 @@ def test_api_error_propagates(mock_build, valid_credentials):
     connector = GoogleConnector(valid_credentials)
     with pytest.raises(Exception, match="API quota exceeded"):
         connector.get_events_delta('cal1')
-
