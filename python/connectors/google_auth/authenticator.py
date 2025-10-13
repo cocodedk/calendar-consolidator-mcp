@@ -32,7 +32,7 @@ class GoogleAuthenticator:
             'verification_url': auth_url,
             'user_code': 'manual',  # User manually visits URL
             'flow_state': serialize_flow_state(
-                self.client_id, 
+                self.client_id,
                 self.client_secret
             )
         }
@@ -76,4 +76,3 @@ class GoogleAuthenticator:
             'refresh_token': creds.refresh_token or refresh_token,
             'expires_at': creds.expiry.isoformat() if creds.expiry else None
         }
-

@@ -1,5 +1,5 @@
 """
-Main sync engine - re-export from modular structure.
+Sync engine module - barrel exports.
 """
 
 from .syncer import Syncer

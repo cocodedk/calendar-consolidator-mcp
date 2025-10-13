@@ -28,7 +28,7 @@ def create_client_config(client_id: str, client_secret: str) -> Dict[str, Any]:
     }
 
 
-def create_flow(client_id: str, client_secret: str, 
+def create_flow(client_id: str, client_secret: str,
                 scopes: list) -> InstalledAppFlow:
     """
     Create OAuth flow instance.
@@ -62,4 +62,3 @@ def serialize_flow_state(client_id: str, client_secret: str) -> str:
         'client_id': client_id,
         'client_secret': client_secret
     })
-
