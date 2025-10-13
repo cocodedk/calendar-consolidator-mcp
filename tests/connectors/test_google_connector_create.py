@@ -26,7 +26,7 @@ def sample_event():
     }
 
 
-@patch('python.connectors.google_connector.build')
+@patch('python.connectors.google_connector.service.build')
 def test_create_event_success(mock_build, valid_credentials, sample_event):
     """Create event returns event ID."""
     mock_service = Mock()
@@ -47,7 +47,7 @@ def test_create_event_success(mock_build, valid_credentials, sample_event):
     )
 
 
-@patch('python.connectors.google_connector.build')
+@patch('python.connectors.google_connector.service.build')
 def test_create_event_with_attendees(mock_build, valid_credentials):
     """Create event with attendees."""
     event_data = {

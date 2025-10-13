@@ -6,8 +6,8 @@ from datetime import datetime, timedelta
 from python.connectors.google_auth import GoogleAuthenticator
 
 
-@patch('python.connectors.google_auth.Request')
-@patch('python.connectors.google_auth.Credentials')
+@patch('python.connectors.google_auth.authenticator.Request')
+@patch('python.connectors.google_auth.authenticator.Credentials')
 def test_refresh_token_success(mock_creds_class, mock_request):
     """Refresh token returns new access token."""
     mock_creds = Mock()
@@ -25,8 +25,8 @@ def test_refresh_token_success(mock_creds_class, mock_request):
     mock_creds.refresh.assert_called_once()
 
 
-@patch('python.connectors.google_auth.Request')
-@patch('python.connectors.google_auth.Credentials')
+@patch('python.connectors.google_auth.authenticator.Request')
+@patch('python.connectors.google_auth.authenticator.Credentials')
 def test_refresh_token_preserves_refresh_token(mock_creds_class, mock_request):
     """Refresh token preserves original refresh token if not returned."""
     mock_creds = Mock()
@@ -41,8 +41,8 @@ def test_refresh_token_preserves_refresh_token(mock_creds_class, mock_request):
     assert result['refresh_token'] == 'original_refresh_token'
 
 
-@patch('python.connectors.google_auth.Request')
-@patch('python.connectors.google_auth.Credentials')
+@patch('python.connectors.google_auth.authenticator.Request')
+@patch('python.connectors.google_auth.authenticator.Credentials')
 def test_refresh_token_failure(mock_creds_class, mock_request):
     """Refresh token raises exception on failure."""
     mock_creds = Mock()

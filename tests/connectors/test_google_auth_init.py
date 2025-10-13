@@ -25,7 +25,7 @@ def test_google_authenticator_init_custom_client():
     assert auth.client_secret == custom_secret
 
 
-@patch('python.connectors.google_auth.InstalledAppFlow')
+@patch('python.connectors.google_auth.flow.InstalledAppFlow')
 def test_get_device_code_flow_success(mock_flow_class):
     """Device code flow returns verification_url."""
     mock_flow = Mock()
@@ -43,7 +43,7 @@ def test_get_device_code_flow_success(mock_flow_class):
     assert 'accounts.google.com' in flow['verification_url']
 
 
-@patch('python.connectors.google_auth.InstalledAppFlow')
+@patch('python.connectors.google_auth.flow.InstalledAppFlow')
 def test_acquire_token_by_code_success(mock_flow_class):
     """Acquire token with authorization code returns tokens."""
     mock_creds = Mock()

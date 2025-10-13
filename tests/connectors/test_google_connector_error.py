@@ -26,15 +26,16 @@ def expired_credentials():
     }
 
 
-@patch('python.connectors.google_connector.build')
+@patch('python.connectors.google_connector.service.build')
 def test_token_refresh_on_expired(mock_build, expired_credentials):
     """Connector refreshes token when expired."""
-    with patch.object(GoogleConnector, '_refresh_token') as mock_refresh:
+    with patch('python.connectors.google_connector.token_manager.TokenManager.refresh_if_needed') as mock_refresh:
         connector = GoogleConnector(expired_credentials)
-        mock_refresh.assert_called_once()
+        mock_refresh.assert_called()
 
 
-def test_missing_refresh_token():
+@patch('python.connectors.google_connector.service.build')
+def test_missing_refresh_token(mock_build):
     """Connector raises error when refresh token missing."""
     credentials = {
         'access_token': 'access123',
@@ -42,12 +43,10 @@ def test_missing_refresh_token():
     }
 
     with pytest.raises(Exception, match="No refresh token"):
-        with patch('python.connectors.google_connector.build'):
-            connector = GoogleConnector(credentials)
-            connector._refresh_token()
+        connector = GoogleConnector(credentials)
 
 
-@patch('python.connectors.google_connector.build')
+@patch('python.connectors.google_connector.service.build')
 def test_api_error_propagates(mock_build, valid_credentials):
     """API errors are propagated to caller."""
     mock_service = Mock()

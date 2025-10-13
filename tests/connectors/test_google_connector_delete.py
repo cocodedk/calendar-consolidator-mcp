@@ -16,7 +16,7 @@ def valid_credentials():
     }
 
 
-@patch('python.connectors.google_connector.build')
+@patch('python.connectors.google_connector.service.build')
 def test_delete_event_success(mock_build, valid_credentials):
     """Delete event removes event from calendar."""
     mock_service = Mock()
@@ -36,7 +36,7 @@ def test_delete_event_success(mock_build, valid_credentials):
     )
 
 
-@patch('python.connectors.google_connector.build')
+@patch('python.connectors.google_connector.service.build')
 def test_get_event_success(mock_build, valid_credentials):
     """Get event returns event data."""
     mock_service = Mock()
@@ -55,7 +55,7 @@ def test_get_event_success(mock_build, valid_credentials):
     assert event['summary'] == 'Test Meeting'
 
 
-@patch('python.connectors.google_connector.build')
+@patch('python.connectors.google_connector.service.build')
 def test_get_event_not_found(mock_build, valid_credentials):
     """Get event returns None for non-existent event."""
     mock_service = Mock()

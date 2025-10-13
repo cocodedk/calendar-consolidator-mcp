@@ -16,7 +16,7 @@ def valid_credentials():
     }
 
 
-@patch('python.connectors.google_connector.build')
+@patch('python.connectors.google_connector.service.build')
 def test_list_calendars_success(mock_build, valid_credentials):
     """List calendars returns calendar info."""
     mock_service = Mock()
@@ -40,7 +40,7 @@ def test_list_calendars_success(mock_build, valid_credentials):
     assert calendars[1]['canWrite'] is False
 
 
-@patch('python.connectors.google_connector.build')
+@patch('python.connectors.google_connector.service.build')
 def test_get_events_delta_initial_sync(mock_build, valid_credentials):
     """Get events delta for initial sync."""
     mock_service = Mock()
@@ -62,7 +62,7 @@ def test_get_events_delta_initial_sync(mock_build, valid_credentials):
     assert result['nextSyncToken'] == 'sync_token_abc123'
 
 
-@patch('python.connectors.google_connector.build')
+@patch('python.connectors.google_connector.service.build')
 def test_get_events_delta_with_token(mock_build, valid_credentials):
     """Get events delta with existing sync token."""
     sync_token = 'sync_token_abc123'

@@ -16,7 +16,7 @@ def valid_credentials():
     }
 
 
-@patch('python.connectors.google_connector.build')
+@patch('python.connectors.google_connector.service.build')
 def test_update_event_success(mock_build, valid_credentials):
     """Update event modifies existing event."""
     updated_data = {
@@ -43,7 +43,7 @@ def test_update_event_success(mock_build, valid_credentials):
     )
 
 
-@patch('python.connectors.google_connector.build')
+@patch('python.connectors.google_connector.service.build')
 def test_update_event_partial_fields(mock_build, valid_credentials):
     """Update event with partial data."""
     partial_data = {'summary': 'New Title Only'}
