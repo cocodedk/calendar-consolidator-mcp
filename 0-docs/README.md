@@ -59,6 +59,13 @@ Database schema and storage
 - **[05-settings-table.md](05-database/05-settings-table.md)** - Settings table schema
 - **[06-credential-storage.md](05-database/06-credential-storage.md)** - Credential encryption
 
+### Testing Documentation
+- **[PYTEST_COMPLETE.md](PYTEST_COMPLETE.md)** - Test suite summary (81 tests, 100% passing)
+- **[TEST_SUITE_SUMMARY.md](TEST_SUITE_SUMMARY.md)** - Detailed test coverage breakdown
+- **[TEST_INVENTORY.md](TEST_INVENTORY.md)** - File-by-file test inventory
+- **[TESTING_QUICKSTART.md](TESTING_QUICKSTART.md)** - Quick start guide for running tests
+- **[TEST_REPORT.md](TEST_REPORT.md)** - Initial implementation test report
+
 ### Legacy Documents
 - **[prd.md](prd.md)** - Original Product Requirements Document (reference)
 
