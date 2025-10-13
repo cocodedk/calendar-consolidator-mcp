@@ -41,7 +41,7 @@ Create `tests/` directory with organized subdirectories:
 4. `tests/model/test_event_to_graph.py` - to_graph conversion
 5. `tests/model/test_event_hash.py` - compute_hash functionality
 6. `tests/model/test_diff_create.py` - Diff for new events
-7. `tests/model/test_diff_update.py` - Diff for updated events  
+7. `tests/model/test_diff_update.py` - Diff for updated events
 8. `tests/model/test_diff_delete.py` - Diff for deleted events
 9. `tests/model/test_diff_private.py` - Private event filtering
 10. `tests/model/test_diff_summary.py` - Summary generation

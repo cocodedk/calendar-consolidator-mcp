@@ -28,10 +28,10 @@ def test_list_calendars_success(mock_get, valid_credentials):
     }
     mock_response.raise_for_status = Mock()
     mock_get.return_value = mock_response
-    
+
     connector = GraphConnector(valid_credentials)
     calendars = connector.list_calendars()
-    
+
     assert len(calendars) == 2
     assert calendars[0]['id'] == 'cal1'
     assert calendars[0]['name'] == 'Work'
@@ -51,10 +51,10 @@ def test_get_events_delta_initial_sync(mock_get, valid_credentials):
     }
     mock_response.raise_for_status = Mock()
     mock_get.return_value = mock_response
-    
+
     connector = GraphConnector(valid_credentials)
     result = connector.get_events_delta('cal1')
-    
+
     assert len(result['events']) == 2
     assert result['nextSyncToken'] is not None
 
@@ -70,10 +70,9 @@ def test_get_events_delta_with_token(mock_get, valid_credentials):
     }
     mock_response.raise_for_status = Mock()
     mock_get.return_value = mock_response
-    
+
     connector = GraphConnector(valid_credentials)
     result = connector.get_events_delta('cal1', sync_token)
-    
+
     mock_get.assert_called_with(sync_token, headers=connector._get_headers())
     assert len(result['events']) == 1
-

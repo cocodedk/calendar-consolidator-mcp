@@ -31,10 +31,10 @@ def test_get_device_code_flow_success(mock_app_class):
         'expires_in': 900
     }
     mock_app_class.return_value = mock_app
-    
+
     auth = GraphAuthenticator()
     flow = auth.get_device_code_flow()
-    
+
     assert flow['user_code'] == 'ABC123'
     assert 'verification_uri' in flow
     mock_app.initiate_device_flow.assert_called_once()
@@ -46,8 +46,7 @@ def test_get_device_code_flow_failure(mock_app_class):
     mock_app = Mock()
     mock_app.initiate_device_flow.return_value = {'error': 'failed'}
     mock_app_class.return_value = mock_app
-    
+
     auth = GraphAuthenticator()
     with pytest.raises(Exception, match="Failed to create device flow"):
         auth.get_device_code_flow()
-

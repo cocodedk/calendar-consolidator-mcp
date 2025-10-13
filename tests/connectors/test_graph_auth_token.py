@@ -15,11 +15,11 @@ def test_acquire_token_by_device_flow_success(mock_app_class):
         'expires_in': 3600
     }
     mock_app_class.return_value = mock_app
-    
+
     auth = GraphAuthenticator()
     flow = {'device_code': 'device123'}
     result = auth.acquire_token_by_device_flow(flow)
-    
+
     assert result['access_token'] == 'access123'
     assert result['refresh_token'] == 'refresh456'
 
@@ -33,7 +33,7 @@ def test_acquire_token_by_device_flow_failure(mock_app_class):
         'error_description': 'User has not completed authentication'
     }
     mock_app_class.return_value = mock_app
-    
+
     auth = GraphAuthenticator()
     flow = {'device_code': 'device123'}
     with pytest.raises(Exception, match="Authentication failed"):
@@ -50,10 +50,10 @@ def test_refresh_token_success(mock_app_class):
         'expires_in': 3600
     }
     mock_app_class.return_value = mock_app
-    
+
     auth = GraphAuthenticator()
     result = auth.refresh_token('refresh456')
-    
+
     assert result['access_token'] == 'new_access789'
 
 
@@ -66,8 +66,7 @@ def test_refresh_token_failure(mock_app_class):
         'error': 'invalid_grant'
     }
     mock_app_class.return_value = mock_app
-    
+
     auth = GraphAuthenticator()
     with pytest.raises(Exception, match="Token refresh failed"):
         auth.refresh_token('invalid_refresh')
-

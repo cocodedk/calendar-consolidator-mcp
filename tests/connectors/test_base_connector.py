@@ -23,7 +23,7 @@ def test_base_connector_requires_list_calendars():
             pass
         def get_event(self, calendar_id, event_id):
             pass
-    
+
     with pytest.raises(TypeError):
         IncompleteConnector()
 
@@ -43,8 +43,7 @@ def test_base_connector_all_methods_required():
             pass
         def get_event(self, calendar_id, event_id):
             return None
-    
+
     connector = CompleteConnector()
     assert connector is not None
     assert connector.list_calendars() == []
-

@@ -22,11 +22,11 @@ def test_update_event_success(mock_patch, valid_credentials):
     mock_response = Mock()
     mock_response.raise_for_status = Mock()
     mock_patch.return_value = mock_response
-    
+
     connector = GraphConnector(valid_credentials)
     event_data = {'subject': 'Updated Meeting Title'}
     connector.update_event('cal1', 'event123', event_data)
-    
+
     mock_patch.assert_called_once()
     call_args = mock_patch.call_args
     assert 'event123' in call_args[0][0]
@@ -44,10 +44,10 @@ def test_get_event_success(mock_get, valid_credentials):
     mock_response.raise_for_status = Mock()
     mock_response.status_code = 200
     mock_get.return_value = mock_response
-    
+
     connector = GraphConnector(valid_credentials)
     event = connector.get_event('cal1', 'event123')
-    
+
     assert event is not None
     assert event['id'] == 'event123'
     assert event['subject'] == 'Meeting'
@@ -59,9 +59,8 @@ def test_get_event_not_found(mock_get, valid_credentials):
     mock_response = Mock()
     mock_response.status_code = 404
     mock_get.return_value = mock_response
-    
+
     connector = GraphConnector(valid_credentials)
     event = connector.get_event('cal1', 'missing_event')
-    
-    assert event is None
 
+    assert event is None

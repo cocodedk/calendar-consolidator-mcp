@@ -31,23 +31,23 @@ def test_preview_sync_no_writes_to_database(mock_config):
     }
     mock_config.mappings.get_all_for_source.return_value = []
     mock_config.settings.get_bool.return_value = False
-    
+
     mock_connector = Mock()
     mock_connector.get_events_delta.return_value = {
         'events': [],
         'nextSyncToken': 'token123'
     }
-    
+
     syncer = DryRunSyncer(mock_config)
-    
+
     with patch.object(syncer, '_get_connector', return_value=mock_connector):
         result = syncer.preview_sync(1)
-    
+
     # Verify no create/update/delete methods called on mappings
     mock_config.mappings.create.assert_not_called()
     mock_config.mappings.update_hash.assert_not_called()
     mock_config.mappings.delete.assert_not_called()
-    
+
     assert isinstance(result, dict)
 
 
@@ -62,20 +62,19 @@ def test_preview_sync_no_api_writes(mock_config):
     mock_config.target.get.return_value = {'calendar_id': 'target'}
     mock_config.mappings.get_all_for_source.return_value = []
     mock_config.settings.get_bool.return_value = False
-    
+
     mock_connector = Mock()
     mock_connector.get_events_delta.return_value = {
         'events': [],
         'nextSyncToken': 'token456'
     }
-    
+
     syncer = DryRunSyncer(mock_config)
-    
+
     with patch.object(syncer, '_get_connector', return_value=mock_connector):
         syncer.preview_sync(1)
-    
+
     # Verify no create/update/delete API calls
     mock_connector.create_event.assert_not_called()
     mock_connector.update_event.assert_not_called()
     mock_connector.delete_event.assert_not_called()
-

@@ -24,7 +24,7 @@ def test_api_error_401_unauthorized(mock_get, valid_credentials):
     mock_response.status_code = 401
     mock_response.raise_for_status.side_effect = requests.HTTPError("401 Unauthorized")
     mock_get.return_value = mock_response
-    
+
     connector = GraphConnector(valid_credentials)
     with pytest.raises(requests.HTTPError):
         connector.list_calendars()
@@ -37,7 +37,7 @@ def test_api_error_429_rate_limit(mock_get, valid_credentials):
     mock_response.status_code = 429
     mock_response.raise_for_status.side_effect = requests.HTTPError("429 Too Many Requests")
     mock_get.return_value = mock_response
-    
+
     connector = GraphConnector(valid_credentials)
     with pytest.raises(requests.HTTPError):
         connector.get_events_delta('cal1')
@@ -50,7 +50,7 @@ def test_api_error_500_server_error(mock_post, valid_credentials):
     mock_response.status_code = 500
     mock_response.raise_for_status.side_effect = requests.HTTPError("500 Internal Server Error")
     mock_post.return_value = mock_response
-    
+
     connector = GraphConnector(valid_credentials)
     with pytest.raises(requests.HTTPError):
         connector.create_event('cal1', {'subject': 'Test'})
@@ -64,8 +64,7 @@ def test_expired_token_refreshes_automatically(mock_get, valid_credentials):
         'refresh_token': 'refresh456',
         'expires_at': (datetime.utcnow() - timedelta(minutes=10)).isoformat()
     }
-    
+
     with patch.object(GraphConnector, '_refresh_token') as mock_refresh:
         connector = GraphConnector(expired_creds)
         mock_refresh.assert_called_once()
-
