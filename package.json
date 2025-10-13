@@ -1,0 +1,22 @@
+{
+  "name": "calendar-consolidator-mcp",
+  "version": "0.1.0",
+  "description": "Calendar Consolidator MCP Server - Sync multiple calendars to one",
+  "main": "node/server/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node node/server/index.js",
+    "dev": "node --watch node/server/index.js"
+  },
+  "keywords": ["mcp", "calendar", "sync", "microsoft", "caldav"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
