@@ -90,3 +90,25 @@ class SourceStore:
             (active, source_id)
         )
         conn.commit()
+
+    def list(self) -> List[Dict[str, Any]]:
+        """Get all sources (without credentials for API)."""
+        conn = self.db.connect()
+        rows = conn.execute("SELECT id, type, calendar_id, name, active, created_at FROM sources").fetchall()
+        return [dict(row) for row in rows]
+
+
+# API wrapper functions
+def add(type: str, calendar_id: str, name: str, credentials: Dict[str, Any]) -> int:
+    """API wrapper to add source."""
+    db = Database()
+    store = SourceStore(db)
+    return store.add(type, calendar_id, name, credentials)
+
+
+def remove(source_id: int):
+    """API wrapper to remove source."""
+    db = Database()
+    store = SourceStore(db)
+    store.remove(source_id)
+    return {'success': True}

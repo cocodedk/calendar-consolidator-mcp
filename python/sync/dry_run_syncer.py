@@ -82,3 +82,12 @@ class DryRunSyncer:
             return GraphConnector(config['credentials'])
         else:
             raise NotImplementedError(f"Connector type {config['type']} not implemented")
+
+
+# API wrapper function
+def preview_sync(source_id: int) -> Dict[str, Any]:
+    """API wrapper to preview sync."""
+    from ..state import ConfigStore
+    config = ConfigStore()
+    syncer = DryRunSyncer(config)
+    return syncer.preview_sync(source_id)

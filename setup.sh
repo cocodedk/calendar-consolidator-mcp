@@ -41,8 +41,8 @@ npm install
 echo "💾 Initializing database..."
 python3 python/init_db.py
 
-# Create .env file
-if [ ! -f .env ]; then
+# Create .env file (optional)
+if [ ! -f .env ] && [ -f .env.example ]; then
     echo "⚙️ Creating .env file..."
     cp .env.example .env
     echo "📝 Please edit .env with your configuration"

@@ -51,3 +51,12 @@ class TargetStore:
         conn = self.db.connect()
         row = conn.execute("SELECT COUNT(*) as count FROM target WHERE id = 1").fetchone()
         return row['count'] > 0
+
+
+# API wrapper functions
+def set(type: str, calendar_id: str, name: str, credentials: Dict[str, Any]):
+    """API wrapper to set target."""
+    db = Database()
+    store = TargetStore(db)
+    store.set(type, calendar_id, name, credentials)
+    return {'success': True}

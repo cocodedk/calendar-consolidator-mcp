@@ -20,7 +20,16 @@ const PYTHON_PATH = process.env.PYTHON_PATH || 'python3';
  */
 export async function executePython(scriptPath, args = []) {
   return new Promise((resolve, reject) => {
-    const python = spawn(PYTHON_PATH, [scriptPath, ...args]);
+    // Set PYTHONPATH to include project root
+    const projectRoot = path.join(__dirname, '../..');
+    const env = {
+      ...process.env,
+      PYTHONPATH: process.env.PYTHONPATH
+        ? `${process.env.PYTHONPATH}:${projectRoot}`
+        : projectRoot
+    };
+
+    const python = spawn(PYTHON_PATH, [scriptPath, ...args], { env });
 
     let stdout = '';
     let stderr = '';

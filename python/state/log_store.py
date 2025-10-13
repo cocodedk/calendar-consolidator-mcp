@@ -76,3 +76,11 @@ class LogStore:
             (days,)
         ).fetchone()
         return dict(row) if row else {}
+
+
+# API wrapper function
+def get_recent(limit: int = 50) -> List[Dict[str, Any]]:
+    """API wrapper to get recent logs."""
+    db = Database()
+    store = LogStore(db)
+    return store.get_recent(limit)
