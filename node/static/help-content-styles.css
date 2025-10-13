@@ -1,0 +1,99 @@
+/* Help Content and Scrollbar Styles */
+
+.help-content {
+    margin-top: 12px;
+    padding: 20px;
+    background: var(--bg-card);
+    border-radius: 8px;
+    border: 2px solid var(--accent-primary);
+    box-shadow: 0 2px 8px var(--shadow);
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+}
+
+.help-content.collapsed {
+    max-height: 0;
+    opacity: 0;
+    padding: 0 20px;
+    margin-top: 0;
+    border-width: 0;
+}
+
+.help-content.expanded {
+    max-height: 600px;
+    opacity: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Scrollbar styling */
+.help-content.expanded::-webkit-scrollbar {
+    width: 10px;
+}
+
+.help-content.expanded::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 5px;
+}
+
+.help-content.expanded::-webkit-scrollbar-thumb {
+    background: var(--accent-primary);
+    border-radius: 5px;
+    transition: background 0.2s ease;
+}
+
+.help-content.expanded::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-hover);
+}
+
+/* Firefox scrollbar */
+.help-content.expanded {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-primary) var(--bg-secondary);
+}
+
+/* Guide Section Styles */
+.guide-section {
+    margin-bottom: 20px;
+}
+
+.guide-section:last-child {
+    margin-bottom: 0;
+}
+
+.guide-section h3 {
+    color: var(--accent-primary);
+    font-size: 20px;
+    margin-bottom: 12px;
+    border-bottom: 2px solid var(--accent-primary);
+    padding-bottom: 8px;
+}
+
+.guide-section h4 {
+    color: var(--text-primary);
+    font-size: 16px;
+    margin-bottom: 10px;
+    margin-top: 16px;
+}
+
+.guide-section p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.guide-section ul,
+.guide-section ol {
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+.guide-section li {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 6px;
+}
+
+.guide-section li strong {
+    color: var(--text-primary);
+}

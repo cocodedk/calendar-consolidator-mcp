@@ -1,85 +1,107 @@
 """
-Credential encryption module for Calendar Consolidator MCP.
-Handles secure storage of OAuth tokens and credentials.
+Encryption utilities for storing sensitive credentials.
 """
 
+import os
 import json
-import keyring
-from typing import Optional, Dict, Any
+import base64
+from pathlib import Path
+from cryptography.fernet import Fernet
+from typing import Optional
 
 
-SERVICE_NAME = "calendar-consolidator-mcp"
+def get_key_file_path() -> Path:
+    """Get path to encryption key file."""
+    return Path(__file__).parent.parent.parent / '.encryption_key'
 
 
-def store_credentials(identifier: str, credentials: Dict[str, Any]) -> None:
-    """
-    Store credentials securely using OS keychain.
-
-    Args:
-        identifier: Unique identifier (e.g., "source-1", "target-1")
-        credentials: Dictionary containing credential data
-    """
-    cred_json = json.dumps(credentials)
-    keyring.set_password(SERVICE_NAME, identifier, cred_json)
+def generate_encryption_key() -> bytes:
+    """Generate a new encryption key."""
+    return Fernet.generate_key()
 
 
-def load_credentials(identifier: str) -> Optional[Dict[str, Any]]:
-    """
-    Load credentials from OS keychain.
+def load_or_create_key() -> bytes:
+    """Load existing key or create new one."""
+    key_file = get_key_file_path()
 
-    Args:
-        identifier: Unique identifier
+    if key_file.exists():
+        with open(key_file, 'rb') as f:
+            return f.read()
 
-    Returns:
-        Dictionary of credentials or None if not found
-    """
-    cred_json = keyring.get_password(SERVICE_NAME, identifier)
-    if cred_json:
-        return json.loads(cred_json)
-    return None
+    # Generate new key
+    key = generate_encryption_key()
+
+    # Save it
+    with open(key_file, 'wb') as f:
+        f.write(key)
+
+    # Secure permissions (Unix only)
+    if hasattr(os, 'chmod'):
+        os.chmod(key_file, 0o600)
+
+    return key
 
 
-def delete_credentials(identifier: str) -> None:
-    """
-    Delete credentials from OS keychain.
+def get_fernet() -> Fernet:
+    """Get Fernet cipher instance."""
+    key = load_or_create_key()
+    return Fernet(key)
 
-    Args:
-        identifier: Unique identifier
-    """
+
+def encrypt_credentials(data: dict) -> str:
+    """Encrypt credentials dictionary."""
+    f = get_fernet()
+    json_str = json.dumps(data)
+    encrypted = f.encrypt(json_str.encode())
+    return base64.b64encode(encrypted).decode()
+
+
+def decrypt_credentials(encrypted_str: str) -> Optional[dict]:
+    """Decrypt credentials string."""
     try:
-        keyring.delete_password(SERVICE_NAME, identifier)
-    except keyring.errors.PasswordDeleteError:
-        pass  # Already deleted or doesn't exist
+        f = get_fernet()
+        encrypted = base64.b64decode(encrypted_str.encode())
+        decrypted = f.decrypt(encrypted)
+        return json.loads(decrypted.decode())
+    except Exception as e:
+        print(f"Decryption error: {e}")
+        return None
 
 
-def credentials_to_blob(credentials: Dict[str, Any]) -> bytes:
-    """
-    Convert credentials dict to blob for database storage.
-    For OS keychain approach, this stores a reference.
+def mask_secret(secret: str, show_chars: int = 3) -> str:
+    """Mask a secret string for display."""
+    if not secret or len(secret) <= show_chars * 2:
+        return "***"
 
-    Args:
-        credentials: Credential dictionary
-
-    Returns:
-        Blob data for database
-    """
-    # Store minimal reference in DB, actual data in keychain
-    reference = {"keychain": True}
-    return json.dumps(reference).encode('utf-8')
+    prefix = secret[:show_chars]
+    suffix = secret[-show_chars:]
+    return f"{prefix}***...***{suffix}"
 
 
-def blob_to_credentials(blob: bytes, identifier: str) -> Optional[Dict[str, Any]]:
-    """
-    Convert database blob to credentials dict.
+# Legacy functions for backward compatibility with existing code
+def credentials_to_blob(credentials: dict) -> str:
+    """Convert credentials dict to encrypted blob (legacy)."""
+    return encrypt_credentials(credentials)
 
-    Args:
-        blob: Blob data from database
-        identifier: Identifier to load from keychain
 
-    Returns:
-        Credentials dictionary or None
-    """
-    reference = json.loads(blob.decode('utf-8'))
-    if reference.get("keychain"):
-        return load_credentials(identifier)
-    return None
+def blob_to_credentials(blob: str) -> Optional[dict]:
+    """Convert encrypted blob to credentials dict (legacy)."""
+    return decrypt_credentials(blob)
+
+
+def store_credentials(key: str, credentials: dict) -> bool:
+    """Store credentials in keyring (legacy - uses credentials_manager)."""
+    try:
+        from .credentials_manager import save_credentials
+        return save_credentials(key, credentials)
+    except ImportError:
+        return False
+
+
+def delete_credentials(key: str) -> bool:
+    """Delete credentials from keyring (legacy - uses credentials_manager)."""
+    try:
+        from .credentials_manager import delete_credentials as delete_creds
+        return delete_creds(key)
+    except ImportError:
+        return False

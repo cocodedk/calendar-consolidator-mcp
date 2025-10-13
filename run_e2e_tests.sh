@@ -24,11 +24,16 @@ echo ""
 echo "Running tests..."
 echo ""
 
-# Run tests
-npm test
+# Check for --headed flag
+if [ "$1" = "--headed" ]; then
+    echo "Running in headed mode (visible browser)..."
+    npm run test:headed
+else
+    # Run tests
+    npm test
+fi
 
 echo ""
 echo "✅ E2E tests complete!"
 echo ""
 echo "To view the report: cd tests-e2e && npm run report"
-
