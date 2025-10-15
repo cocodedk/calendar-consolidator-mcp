@@ -46,48 +46,31 @@ npm install
 python python/init_db.py
 ```
 
-### Windows Setup (Alternative)
+### Windows Setup (PowerShell)
 
-For Windows users, use the provided PowerShell scripts for a streamlined setup:
+Use the included PowerShell helpers when working on Windows:
 
-**Quick setup** (installs dependencies, initializes database, and optionally creates virtual environment):
+**Quick setup** (installs dependencies, initializes the database, and optionally creates a virtual environment):
 ```powershell
-.\setup.ps1
+.\setup_windows.ps1
 ```
 
-**Quick start** (activates virtual environment if available and starts the web UI):
+**Quick start** (activates the virtual environment if available and starts the web UI):
 ```powershell
-.\run.ps1
+.\run_windows.ps1
 ```
 
-The PowerShell scripts provide the same functionality as their bash counterparts but are optimized for Windows with proper path handling, virtual environment activation, and enhanced error messages.
-
-**Note**: The PowerShell scripts now handle execution policy issues automatically! They will attempt to adjust the execution policy for the current session if needed.
-
-If you still encounter issues, try these solutions:
-
-**Option 1 - Unblock the script files** (if downloaded from internet):
+If Windows blocks script execution, you can run:
 ```powershell
-Unblock-File .\setup.ps1
-Unblock-File .\run.ps1
+Unblock-File .\setup_windows.ps1
+Unblock-File .\run_windows.ps1
 ```
 
-**Option 2 - Manual bypass** (if automatic handling fails):
+Or bypass the policy for a single run:
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\setup.ps1
-powershell -ExecutionPolicy Bypass -File .\run.ps1
+powershell -ExecutionPolicy Bypass -File .\setup_windows.ps1
+powershell -ExecutionPolicy Bypass -File .\run_windows.ps1
 ```
-
-**Option 3 - Change execution policy permanently** (requires Administrator):
-```powershell
-# Check current policies
-Get-ExecutionPolicy -List
-
-# Set for current user (recommended)
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-```
-
-The scripts are designed to work out of the box on any Windows system without requiring manual execution policy changes.
 
 **Manual setup** (if you prefer step-by-step):
 ```powershell
@@ -112,7 +95,7 @@ Then open http://localhost:3000 in your browser.
 **Windows web UI**:
 ```powershell
 # Using PowerShell script (recommended)
-.\run.ps1
+.\run_windows.ps1
 
 # Or manually
 npm start
@@ -126,7 +109,8 @@ MCP_MODE=true node node/server/index.js
 **Windows MCP server**:
 ```powershell
 # Using PowerShell script (with virtual environment)
-.\run.ps1 -SkipVenv
+$env:MCP_MODE = "true"
+.\run_windows.ps1
 
 # Or manually
 $env:MCP_MODE="true"

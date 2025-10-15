@@ -10,7 +10,20 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const PYTHON_PATH = process.env.PYTHON_PATH || 'python3';
+const DEFAULT_PYTHON = process.platform === 'win32' ? 'python' : 'python3';
+const PYTHON_PATH = process.env.PYTHON_PATH || DEFAULT_PYTHON;
+const PATH_DELIMITER = path.delimiter;
+const PROJECT_ROOT = path.join(__dirname, '../..');
+
+export const PYTHON_COMMAND = PYTHON_PATH;
+
+export function buildPythonEnv() {
+  const env = { ...process.env };
+  env.PYTHONPATH = env.PYTHONPATH
+    ? `${env.PYTHONPATH}${PATH_DELIMITER}${PROJECT_ROOT}`
+    : PROJECT_ROOT;
+  return env;
+}
 
 /**
  * Execute Python script and return JSON result.
@@ -21,14 +34,7 @@ const PYTHON_PATH = process.env.PYTHON_PATH || 'python3';
 export async function executePython(scriptPath, args = []) {
   return new Promise((resolve, reject) => {
     // Set PYTHONPATH to include project root
-    const projectRoot = path.join(__dirname, '../..');
-    const env = {
-      ...process.env,
-      PYTHONPATH: process.env.PYTHONPATH
-        ? `${process.env.PYTHONPATH}:${projectRoot}`
-        : projectRoot
-    };
-
+    const env = buildPythonEnv();
     const python = spawn(PYTHON_PATH, [scriptPath, ...args], { env });
 
     let stdout = '';

@@ -2,18 +2,41 @@
  * GET credentials endpoint - returns masked credentials.
  */
 
-import { execSync } from 'child_process';
+import { spawnSync } from 'child_process';
+import { PYTHON_COMMAND, buildPythonEnv } from '../../python_bridge.js';
 
 /**
  * Get masked credentials for a provider.
  */
 function getMaskedCredentials(provider) {
     try {
-        const result = execSync(
-            `python3 -c "from python.state.credentials_manager import get_masked_credentials; import json; print(json.dumps(get_masked_credentials('${provider}')))"`,
-            { encoding: 'utf-8' }
+        const pythonCode = [
+            'from python.state.credentials_manager import get_masked_credentials',
+            'import json, sys',
+            'provider = sys.argv[1]',
+            'result = get_masked_credentials(provider)',
+            'print(json.dumps(result))'
+        ].join('; ');
+
+        const result = spawnSync(
+            PYTHON_COMMAND,
+            ['-c', pythonCode, provider],
+            {
+                encoding: 'utf-8',
+                env: buildPythonEnv()
+            }
         );
-        return JSON.parse(result.trim());
+
+        if (result.error) {
+            throw result.error;
+        }
+
+        if (result.status !== 0) {
+            const stderr = result.stderr ? result.stderr.trim() : '';
+            throw new Error(stderr || `Python exited with code ${result.status}`);
+        }
+
+        return JSON.parse(result.stdout.trim());
     } catch (error) {
         console.error(`Error getting credentials for ${provider}:`, error.message);
         return null;
