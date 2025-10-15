@@ -18,6 +18,14 @@ if (-not (Test-Path -Path $venvActivate)) {
 Write-Host "[*] Activating virtual environment..."
 . $venvActivate
 
+# Ensure Node services use the venv Python interpreter
+$venvPython = Join-Path $PSScriptRoot "venv\Scripts\python.exe"
+if (Test-Path -Path $venvPython) {
+    $env:PYTHON_PATH = $venvPython
+} elseif (-not $env:PYTHON_PATH) {
+    $env:PYTHON_PATH = "python"
+}
+
 # Ensure Python can locate the project modules
 $projectRoot = (Get-Location).Path
 if ($env:PYTHONPATH) {

@@ -2,19 +2,41 @@
  * PUT credentials endpoint - saves encrypted credentials.
  */
 
-import { execSync } from 'child_process';
+import { spawnSync } from 'child_process';
 import { validateCredentials } from './validate.js';
+import { PYTHON_COMMAND, buildPythonEnv } from '../../python_bridge.js';
 
 /**
  * Save credentials for a provider.
  */
 function saveCredentials(provider, credentials) {
     try {
-        const credsJson = JSON.stringify(credentials).replace(/"/g, '\\"');
-        execSync(
-            `python3 -c "from python.state.credentials_manager import save_credentials; import json; save_credentials('${provider}', json.loads('${credsJson}'))"`,
-            { encoding: 'utf-8' }
+        const pythonCode = [
+            'from python.state.credentials_manager import save_credentials',
+            'import json, sys',
+            'provider = sys.argv[1]',
+            'creds = json.loads(sys.argv[2])',
+            'save_credentials(provider, creds)'
+        ].join('; ');
+
+        const result = spawnSync(
+            PYTHON_COMMAND,
+            ['-c', pythonCode, provider, JSON.stringify(credentials)],
+            {
+                encoding: 'utf-8',
+                env: buildPythonEnv()
+            }
         );
+
+        if (result.error) {
+            throw result.error;
+        }
+
+        if (result.status !== 0) {
+            const stderr = result.stderr ? result.stderr.trim() : '';
+            throw new Error(stderr || `Python exited with code ${result.status}`);
+        }
+
         return true;
     } catch (error) {
         console.error(`Error saving credentials for ${provider}:`, error.message);
