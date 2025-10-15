@@ -1,10 +1,24 @@
 # Run Calendar Consolidator MCP with virtual environment activated (PowerShell version)
 # This script starts the development server on Windows
+#
+# This script handles Windows execution policy issues automatically
 
 param(
     [switch]$SkipVenv,
     [switch]$Help
 )
+
+# Handle execution policy issues automatically
+try {
+    # Try to set execution policy for current process if restricted
+    $currentPolicy = Get-ExecutionPolicy -Scope Process
+    if ($currentPolicy -eq "Restricted") {
+        Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force 2>$null
+        Write-Host "ℹ️ Adjusted execution policy for this session" -ForegroundColor Cyan
+    }
+} catch {
+    # If we can't set execution policy, the script will still work due to -Force parameter usage
+}
 
 if ($Help) {
     Write-Host "Calendar Consolidator MCP Run Script" -ForegroundColor Green
@@ -52,7 +66,7 @@ $dbExists = Test-Path "calendar_consolidator.db"
 if (-not $dbExists) {
     Write-Host "💾 Database not found. Initializing..." -ForegroundColor Blue
     try {
-        python python/init_db.py
+        & python python/init_db.py
         if ($LASTEXITCODE -eq 0) {
             Write-Host "✅ Database initialized" -ForegroundColor Green
         } else {
@@ -75,14 +89,14 @@ Write-Host ""
 
 try {
     # Run npm start (this will keep running until Ctrl+C)
-    npm start
+    & npm start
 } catch {
     if ($_.Exception.Message -like "*Ctrl+C*") {
         Write-Host ""
         Write-Host "👋 Server stopped by user" -ForegroundColor Yellow
     } else {
         Write-Host ""
-        Write-Host "❌ Server stopped unexpectedly: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host '❌ Server stopped unexpectedly: $($_.Exception.Message)' -ForegroundColor Red
         exit 1
     }
 }

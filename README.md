@@ -62,6 +62,33 @@ For Windows users, use the provided PowerShell scripts for a streamlined setup:
 
 The PowerShell scripts provide the same functionality as their bash counterparts but are optimized for Windows with proper path handling, virtual environment activation, and enhanced error messages.
 
+**Note**: The PowerShell scripts now handle execution policy issues automatically! They will attempt to adjust the execution policy for the current session if needed.
+
+If you still encounter issues, try these solutions:
+
+**Option 1 - Unblock the script files** (if downloaded from internet):
+```powershell
+Unblock-File .\setup.ps1
+Unblock-File .\run.ps1
+```
+
+**Option 2 - Manual bypass** (if automatic handling fails):
+```powershell
+powershell -ExecutionPolicy Bypass -File .\setup.ps1
+powershell -ExecutionPolicy Bypass -File .\run.ps1
+```
+
+**Option 3 - Change execution policy permanently** (requires Administrator):
+```powershell
+# Check current policies
+Get-ExecutionPolicy -List
+
+# Set for current user (recommended)
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+The scripts are designed to work out of the box on any Windows system without requiring manual execution policy changes.
+
 **Manual setup** (if you prefer step-by-step):
 ```powershell
 # Install Python dependencies

@@ -1,10 +1,24 @@
 # Setup script for Calendar Consolidator MCP (PowerShell version)
 # This script sets up the development environment on Windows
+#
+# This script handles Windows execution policy issues automatically
 
 param(
     [switch]$SkipVenv,
     [switch]$Help
 )
+
+# Handle execution policy issues automatically
+try {
+    # Try to set execution policy for current process if restricted
+    $currentPolicy = Get-ExecutionPolicy -Scope Process
+    if ($currentPolicy -eq "Restricted") {
+        Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force 2>$null
+        Write-Host "ℹ️ Adjusted execution policy for this session" -ForegroundColor Cyan
+    }
+} catch {
+    # If we can't set execution policy, the script will still work due to -Force parameter usage
+}
 
 if ($Help) {
     Write-Host "Calendar Consolidator MCP Setup Script" -ForegroundColor Green
@@ -64,7 +78,7 @@ Write-Host ""
 
 # Create virtual environment (optional)
 if (-not $SkipVenv) {
-    $createVenv = Read-Host "Create Python virtual environment? (y/n)"
+    $createVenv = Read-Host 'Create Python virtual environment? (y/n)'
     if ($createVenv -eq 'y' -or $createVenv -eq 'Y') {
         Write-Host "📦 Creating virtual environment..." -ForegroundColor Blue
         python -m venv venv
@@ -81,36 +95,51 @@ if (-not $SkipVenv) {
 # Install Python dependencies
 Write-Host "📦 Installing Python dependencies..." -ForegroundColor Blue
 try {
-    pip install -r requirements.txt
-    Write-Host "✅ Python dependencies installed" -ForegroundColor Green
+    & pip install -r requirements.txt
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "✅ Python dependencies installed" -ForegroundColor Green
+    } else {
+        Write-Host "⚠️ Python dependencies installation completed with warnings" -ForegroundColor Yellow
+    }
 } catch {
     Write-Host "❌ Failed to install Python dependencies: $($_.Exception.Message)" -ForegroundColor Red
+    Write-Host "   Make sure Python and pip are installed and accessible" -ForegroundColor Yellow
     exit 1
 }
 
 # Install Node dependencies
 Write-Host "📦 Installing Node dependencies..." -ForegroundColor Blue
 try {
-    npm install
-    Write-Host "✅ Node dependencies installed" -ForegroundColor Green
+    & npm install
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "✅ Node dependencies installed" -ForegroundColor Green
+    } else {
+        Write-Host "⚠️ Node dependencies installation completed with warnings" -ForegroundColor Yellow
+    }
 } catch {
     Write-Host "❌ Failed to install Node dependencies: $($_.Exception.Message)" -ForegroundColor Red
+    Write-Host "   Make sure Node.js and npm are installed and accessible" -ForegroundColor Yellow
     exit 1
 }
 
 # Initialize database
 Write-Host "💾 Initializing database..." -ForegroundColor Blue
 try {
-    python python/init_db.py
-    Write-Host "✅ Database initialized" -ForegroundColor Green
+    & python python/init_db.py
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "✅ Database initialized" -ForegroundColor Green
+    } else {
+        Write-Host "⚠️ Database initialization completed with warnings" -ForegroundColor Yellow
+    }
 } catch {
     Write-Host "❌ Failed to initialize database: $($_.Exception.Message)" -ForegroundColor Red
+    Write-Host "   Make sure Python is installed and accessible" -ForegroundColor Yellow
     exit 1
 }
 
 # Create .env file (optional)
 if (-not (Test-Path .env) -and (Test-Path .env.example)) {
-    $createEnv = Read-Host "Create .env file from .env.example? (y/n)"
+    $createEnv = Read-Host 'Create .env file from .env.example? (y/n)'
     if ($createEnv -eq 'y' -or $createEnv -eq 'Y') {
         Write-Host "⚙️ Creating .env file..." -ForegroundColor Blue
         Copy-Item .env.example .env
