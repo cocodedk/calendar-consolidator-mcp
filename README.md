@@ -46,6 +46,34 @@ npm install
 python python/init_db.py
 ```
 
+### Windows Setup (Alternative)
+
+For Windows users, use the provided PowerShell scripts for a streamlined setup:
+
+**Quick setup** (installs dependencies, initializes database, and optionally creates virtual environment):
+```powershell
+.\setup.ps1
+```
+
+**Quick start** (activates virtual environment if available and starts the web UI):
+```powershell
+.\run.ps1
+```
+
+The PowerShell scripts provide the same functionality as their bash counterparts but are optimized for Windows with proper path handling, virtual environment activation, and enhanced error messages.
+
+**Manual setup** (if you prefer step-by-step):
+```powershell
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Install Node dependencies
+npm install
+
+# Initialize database
+python python/init_db.py
+```
+
 ### Running the Application
 
 **Start web UI** (recommended):
@@ -54,9 +82,28 @@ npm start
 ```
 Then open http://localhost:3000 in your browser.
 
+**Windows web UI**:
+```powershell
+# Using PowerShell script (recommended)
+.\run.ps1
+
+# Or manually
+npm start
+```
+
 **Start as MCP server** (for AI/agent integration):
 ```bash
 MCP_MODE=true node node/server/index.js
+```
+
+**Windows MCP server**:
+```powershell
+# Using PowerShell script (with virtual environment)
+.\run.ps1 -SkipVenv
+
+# Or manually
+$env:MCP_MODE="true"
+node node/server/index.js
 ```
 
 ### MCP Tools Available
@@ -167,9 +214,30 @@ The project follows strict modularization guidelines:
 bash run_tests.sh
 ```
 
+**Windows Python Tests**:
+```powershell
+# Run all Python tests
+python -m pytest tests/ -v
+
+# Run with coverage
+python -m pytest tests/ -v --cov=python --cov-report=html
+```
+
 **Playwright E2E Tests**:
 ```bash
 bash run_e2e_tests.sh
+```
+
+**Windows E2E Tests**:
+```powershell
+# Install Playwright browsers (first time only)
+npx playwright install
+
+# Run E2E tests
+npx playwright test
+
+# Run E2E tests with UI mode
+npx playwright test --ui
 ```
 
 See `tests/` for Python tests and `tests-e2e/` for Playwright tests.
