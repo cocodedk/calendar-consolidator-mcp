@@ -4,18 +4,18 @@ param()
 
 $ErrorActionPreference = "Stop"
 
-Write-Host "🚀 Starting Calendar Consolidator MCP..."
+Write-Host "[*] Starting Calendar Consolidator MCP..."
 
 Set-Location -LiteralPath $PSScriptRoot
 
 # Ensure the virtual environment exists
 $venvActivate = Join-Path $PSScriptRoot "venv\Scripts\Activate.ps1"
 if (-not (Test-Path -Path $venvActivate)) {
-    Write-Error "❌ Virtual environment not found. Please run ./setup.sh (from WSL/Git Bash) or create the venv manually."
+    Write-Error "[!] Virtual environment not found. Please run ./setup.sh (from WSL/Git Bash) or create the venv manually."
     exit 1
 }
 
-Write-Host "📦 Activating virtual environment..."
+Write-Host "[*] Activating virtual environment..."
 . $venvActivate
 
 # Ensure Python can locate the project modules
@@ -29,11 +29,11 @@ if ($env:PYTHONPATH) {
 # Initialize the database if it does not exist
 $databasePath = Join-Path $projectRoot "calendar_consolidator.db"
 if (-not (Test-Path -Path $databasePath)) {
-    Write-Host "💾 Database not found. Initializing..."
+    Write-Host "[*] Database not found. Initializing..."
     python "python/init_db.py"
 }
 
-Write-Host "🌐 Starting server on http://127.0.0.1:3000"
+Write-Host "[*] Starting server on http://127.0.0.1:3000"
 Write-Host ""
 Write-Host "Press Ctrl+C to stop the server"
 Write-Host ""
