@@ -8,14 +8,33 @@ from typing import Dict, Any
 from .config import CLIENT_ID, CLIENT_SECRET, SCOPES
 from .flow import create_flow, serialize_flow_state
 
+# Prefer encrypted credentials stored via settings UI when available
+def _load_stored_google_creds() -> Dict[str, str] | None:
+    try:
+        # Absolute import works because PYTHONPATH includes project root
+        from python.state.credentials_manager import load_credentials  # type: ignore
+        return load_credentials('google')
+    except Exception:
+        return None
+
 
 class GoogleAuthenticator:
     """Handles Google OAuth authentication."""
 
     def __init__(self, client_id: str = CLIENT_ID,
                  client_secret: str = CLIENT_SECRET):
+        # Defaults come from env/config
         self.client_id = client_id
         self.client_secret = client_secret
+
+        # Override with stored (encrypted) credentials when present
+        stored = _load_stored_google_creds()
+        if stored:
+            cid = stored.get('client_id')
+            csec = stored.get('client_secret')
+            if cid and csec:
+                self.client_id = cid
+                self.client_secret = csec
         self.scopes = SCOPES
 
     def get_device_code_flow(self) -> Dict[str, Any]:

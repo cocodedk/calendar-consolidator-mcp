@@ -1,5 +1,7 @@
 """
 Credentials manager for OAuth provider credentials.
+Uses the same database location as the main app (~/.calendar-consolidator/config.db)
+so credentials saved via the Settings UI are available to all components.
 """
 
 import sqlite3
@@ -7,11 +9,14 @@ import sys
 from typing import Optional, Dict, Any
 from pathlib import Path
 from .encryption import encrypt_credentials, decrypt_credentials, mask_secret
+from .database import Database
 
 
 def get_db_path() -> Path:
-    """Get database path."""
-    return Path(__file__).parent.parent.parent / 'calendar_consolidator.db'
+    """Get database path (align with Database default path)."""
+    # Leverage Database's default resolution to the config dir under the user's home
+    db = Database()
+    return Path(db.db_path)
 
 
 def get_connection() -> sqlite3.Connection:

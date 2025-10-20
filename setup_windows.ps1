@@ -99,6 +99,18 @@ npm install
 Write-Host "Initializing database..."
 Invoke-Python -Args @((Join-Path $PSScriptRoot "python\init_db.py"))
 
+# Harden encryption key permissions on Windows (current user only)
+if (Test-Path -Path ".encryption_key") {
+    Write-Host "Hardening .encryption_key permissions..."
+    try {
+        # Remove inheritance and grant R/W to current user
+        icacls ".encryption_key" /inheritance:r | Out-Null
+        icacls ".encryption_key" /grant:r "$($env:USERNAME):(R,W)" | Out-Null
+    } catch {
+        Write-Warning "Could not adjust permissions on .encryption_key: $($_.Exception.Message)"
+    }
+}
+
 # Create .env file if missing
 if (-not (Test-Path -Path ".env") -and (Test-Path -Path ".env.example")) {
     Write-Host "Creating .env file..."

@@ -39,8 +39,10 @@ router.post('/start', async (req, res) => {
     // Create session to track this flow
     const sessionId = createSession(type, flowData);
 
-    // Start polling in background
-    startBackgroundPolling(sessionId, type, flowData);
+    // Start polling in background for providers that support device code polling
+    if (type === 'graph') {
+      startBackgroundPolling(sessionId, type, flowData);
+    }
 
     // Return session ID and user instructions
     res.json({

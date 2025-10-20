@@ -7,6 +7,7 @@ import startFlowRouter from './start_flow.js';
 import pollAuthRouter from './poll_auth.js';
 import listCalendarsRouter from './list_calendars.js';
 import icloudAuthRouter from './icloud_auth.js';
+import completeAuthRouter from './complete_auth.js';
 
 const router = express.Router();
 
@@ -15,5 +16,6 @@ router.use('/', startFlowRouter);
 router.use('/', pollAuthRouter);
 router.use('/', listCalendarsRouter);
 router.use('/', icloudAuthRouter);
+router.use('/', completeAuthRouter);
 
 export default router;
