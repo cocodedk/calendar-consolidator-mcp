@@ -9,7 +9,9 @@ from typing import Dict, Any, Optional
 
 CLIENT_ID = "YOUR_APP_CLIENT_ID"  # TODO: Configure in settings
 AUTHORITY = "https://login.microsoftonline.com/common"
-SCOPES = ["Calendars.ReadWrite", "offline_access"]
+# MSAL forbids reserved scopes like 'offline_access', 'openid', 'profile'.
+# Request only resource scopes here; refresh capability is handled by MSAL.
+SCOPES = ["Calendars.ReadWrite"]
 
 
 class GraphAuthenticator:

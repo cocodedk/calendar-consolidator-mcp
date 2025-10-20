@@ -3,6 +3,7 @@ Credentials manager for OAuth provider credentials.
 """
 
 import sqlite3
+import sys
 from typing import Optional, Dict, Any
 from pathlib import Path
 from .encryption import encrypt_credentials, decrypt_credentials, mask_secret
@@ -41,7 +42,7 @@ def save_credentials(provider: str, credentials: dict) -> bool:
         conn.close()
         return True
     except Exception as e:
-        print(f"Error saving credentials: {e}")
+        print(f"Error saving credentials: {e}", file=sys.stderr)
         return False
 
 
@@ -61,7 +62,7 @@ def load_credentials(provider: str) -> Optional[dict]:
 
         return decrypt_credentials(row['value'])
     except Exception as e:
-        print(f"Error loading credentials: {e}")
+        print(f"Error loading credentials: {e}", file=sys.stderr)
         return None
 
 
@@ -93,5 +94,5 @@ def delete_credentials(provider: str) -> bool:
         conn.close()
         return True
     except Exception as e:
-        print(f"Error deleting credentials: {e}")
+        print(f"Error deleting credentials: {e}", file=sys.stderr)
         return False

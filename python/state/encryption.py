@@ -5,6 +5,7 @@ Encryption utilities for storing sensitive credentials.
 import os
 import json
 import base64
+import sys
 from pathlib import Path
 from cryptography.fernet import Fernet
 from typing import Optional
@@ -64,7 +65,7 @@ def decrypt_credentials(encrypted_str: str) -> Optional[dict]:
         decrypted = f.decrypt(encrypted)
         return json.loads(decrypted.decode())
     except Exception as e:
-        print(f"Decryption error: {e}")
+        print(f"Decryption error: {e}", file=sys.stderr)
         return None
 
 
