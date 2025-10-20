@@ -4,6 +4,7 @@
  */
 
 import { spawn } from 'child_process';
+import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -14,6 +15,58 @@ const DEFAULT_PYTHON = process.platform === 'win32' ? 'python' : 'python3';
 const PYTHON_PATH = process.env.PYTHON_PATH || DEFAULT_PYTHON;
 const PATH_DELIMITER = path.delimiter;
 const PROJECT_ROOT = path.join(__dirname, '../..');
+const LOG_DIR = path.join(PROJECT_ROOT, 'logs');
+const LOG_FILE = path.join(LOG_DIR, 'python_calls.log');
+
+let ensureLogDirPromise = null;
+
+async function ensureLogDir() {
+  if (!ensureLogDirPromise) {
+    ensureLogDirPromise = fs.mkdir(LOG_DIR, { recursive: true }).catch((err) => {
+      console.warn('Failed to create log directory:', err.message);
+    });
+  }
+  return ensureLogDirPromise;
+}
+
+function sanitizeParams(data) {
+  if (data === null || typeof data !== 'object') {
+    return data;
+  }
+
+  const sensitivePattern = /(secret|token|password|code)/i;
+
+  if (Array.isArray(data)) {
+    return data.map((item) => sanitizeParams(item));
+  }
+
+  const sanitized = {};
+  for (const [key, value] of Object.entries(data)) {
+    if (sensitivePattern.test(key)) {
+      sanitized[key] = '***';
+      continue;
+    }
+
+    if (value && typeof value === 'object') {
+      sanitized[key] = sanitizeParams(value);
+      continue;
+    }
+
+    sanitized[key] = value;
+  }
+
+  return sanitized;
+}
+
+async function appendLog(entry) {
+  try {
+    await ensureLogDir();
+    const line = `${JSON.stringify(entry)}\n`;
+    await fs.appendFile(LOG_FILE, line, 'utf8');
+  } catch (err) {
+    console.warn('Failed to write python call log:', err.message);
+  }
+}
 
 export const PYTHON_COMMAND = PYTHON_PATH;
 
@@ -88,7 +141,35 @@ export async function callPythonFunction(module, func, params = {}, className = 
     args.push('--class', className);
   }
 
-  return executePython(scriptPath, args);
+  const startedAt = Date.now();
+  try {
+    const result = await executePython(scriptPath, args);
+
+    await appendLog({
+      timestamp: new Date().toISOString(),
+      module,
+      function: func,
+      className,
+      params: sanitizeParams(params),
+      durationMs: Date.now() - startedAt,
+      success: true
+    });
+
+    return result;
+  } catch (error) {
+    await appendLog({
+      timestamp: new Date().toISOString(),
+      module,
+      function: func,
+      className,
+      params: sanitizeParams(params),
+      durationMs: Date.now() - startedAt,
+      success: false,
+      error: error.message
+    });
+
+    throw error;
+  }
 }
 
 export default {

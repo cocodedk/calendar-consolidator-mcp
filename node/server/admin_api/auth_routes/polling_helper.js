@@ -48,9 +48,39 @@ export async function startBackgroundPolling(sessionId, type, flowData) {
         clearInterval(pollInterval);
       }
     } catch (error) {
-      // Continue polling on errors (user may not have completed auth yet)
-      if (error.message.includes('expired') || error.message.includes('denied')) {
-        updateSessionError(sessionId, error.message);
+      // Inspect common MSAL/device-flow errors and decide whether to stop or continue
+      const rawMessage = error?.message || '';
+      const msg = rawMessage.toLowerCase();
+      console.warn('Graph device flow polling error:', rawMessage);
+
+      // Still waiting cases
+      const stillPending = (
+        msg.includes('authorization_pending') ||
+        msg.includes('pending') ||
+        msg.includes('slow_down')
+      );
+
+      if (stillPending) {
+        return; // keep polling
+      }
+
+      // Terminal errors that won't resolve by waiting
+      const terminalErrors = [
+        'expired',
+        'expired_token',
+        'bad_verification_code',
+        'denied',
+        'declined',
+        'invalid_client',
+        'unauthorized_client',
+        'invalid_scope',
+        'consent_required',
+        'interaction_required',
+        'public client'
+      ];
+
+      if (terminalErrors.some(t => msg.includes(t))) {
+        updateSessionError(sessionId, rawMessage);
         clearInterval(pollInterval);
       }
     }
