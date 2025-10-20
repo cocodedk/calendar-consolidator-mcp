@@ -98,3 +98,9 @@ class GraphConnector(BaseConnector):
             return None
         response.raise_for_status()
         return response.json()
+
+
+# Module-level helper for Node bridge: construct and list calendars.
+def list_calendars(credentials: Dict[str, Any]) -> List[Dict[str, Any]]:
+    connector = GraphConnector(credentials)
+    return connector.list_calendars()

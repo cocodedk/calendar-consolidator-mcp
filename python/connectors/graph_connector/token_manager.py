@@ -27,11 +27,25 @@ class GraphTokenManager:
         Returns:
             True if token needs refresh
         """
-        if 'expires_at' not in self.credentials:
+        if 'expires_at' not in self.credentials or not self.credentials.get('expires_at'):
             return False
 
-        expires_at = datetime.fromisoformat(self.credentials['expires_at'])
-        return datetime.now(timezone.utc) >= expires_at - timedelta(minutes=5)
+        exp_str = self.credentials['expires_at']
+        try:
+            if isinstance(exp_str, str):
+                iso = exp_str.replace('Z', '+00:00')
+                expires_at = datetime.fromisoformat(iso)
+            elif isinstance(exp_str, (int, float)):
+                expires_at = datetime.fromtimestamp(float(exp_str), tz=timezone.utc)
+            else:
+                return False
+
+            if expires_at.tzinfo is None:
+                expires_at = expires_at.replace(tzinfo=timezone.utc)
+        except Exception:
+            return False
+
+        return datetime.now(timezone.utc) >= (expires_at - timedelta(minutes=5))
 
     def refresh_if_needed(self) -> None:
         """Refresh token if expired."""

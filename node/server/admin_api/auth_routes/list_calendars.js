@@ -32,17 +32,14 @@ router.get('/calendars/:sessionId', async (req, res) => {
     }
 
     // Determine connector module
-    let connectorModule, connectorClass;
+    let connectorModule;
 
     if (session.type === 'graph') {
       connectorModule = 'python.connectors.graph_connector.connector';
-      connectorClass = 'GraphConnector';
     } else if (session.type === 'google') {
       connectorModule = 'python.connectors.google_connector.connector';
-      connectorClass = 'GoogleConnector';
     } else if (session.type === 'icloud') {
       connectorModule = 'python.connectors.icloud_connector.connector';
-      connectorClass = 'ICloudConnector';
     } else {
       return res.status(400).json({ error: 'Unknown source type' });
     }
@@ -51,8 +48,7 @@ router.get('/calendars/:sessionId', async (req, res) => {
     const calendars = await callPythonFunction(
       connectorModule,
       'list_calendars',
-      { credentials: session.credentials },
-      connectorClass
+      { credentials: session.credentials }
     );
 
     // Cache calendars in session

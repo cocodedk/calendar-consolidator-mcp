@@ -96,3 +96,9 @@ class GoogleConnector(BaseConnector):
                 return None
             raise
 
+
+# Module-level helper for Node bridge: construct and list calendars.
+def list_calendars(credentials: Dict[str, Any]) -> List[Dict[str, Any]]:
+    connector = GoogleConnector(credentials)
+    return connector.list_calendars()
+

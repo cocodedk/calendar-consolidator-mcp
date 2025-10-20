@@ -178,3 +178,9 @@ class ICloudConnector(BaseConnector):
                 continue
 
         return None
+
+
+# Module-level helper for Node bridge: construct and list calendars.
+def list_calendars(credentials: Dict[str, Any]) -> List[Dict[str, Any]]:
+    connector = ICloudConnector(credentials)
+    return connector.list_calendars()

@@ -8,6 +8,7 @@ from .database import Database
 from .source_store import SourceStore
 from .target_store import TargetStore
 from .settings_store import SettingsStore
+from .log_store import LogStore
 
 
 def get_all_config() -> Dict[str, Any]:
@@ -28,7 +29,7 @@ def get_all_config() -> Dict[str, Any]:
             'type': source['type'],
             'name': source['name'],
             'calendar_id': source['calendar_id'],
-            'enabled': bool(source['enabled']),
+            'active': bool(source.get('active', True)),
             'created_at': source['created_at']
         })
 
@@ -65,7 +66,7 @@ def get_sources() -> List[Dict[str, Any]]:
             'type': source['type'],
             'name': source['name'],
             'calendar_id': source['calendar_id'],
-            'enabled': bool(source['enabled']),
+            'active': bool(source.get('active', True)),
             'created_at': source['created_at']
         })
 
