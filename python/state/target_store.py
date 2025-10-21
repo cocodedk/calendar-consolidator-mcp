@@ -41,7 +41,7 @@ class TargetStore:
         if row:
             target = dict(row)
             target['credentials'] = blob_to_credentials(
-                row['cred_blob'], "target-1"
+                row['cred_blob']
             )
             return target
         return None

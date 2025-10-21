@@ -44,7 +44,7 @@ class SourceStore:
         if row:
             source = dict(row)
             source['credentials'] = blob_to_credentials(
-                row['cred_blob'], f"source-{source_id}"
+                row['cred_blob']
             )
             return source
         return None
@@ -60,7 +60,7 @@ class SourceStore:
         for row in rows:
             source = dict(row)
             source['credentials'] = blob_to_credentials(
-                row['cred_blob'], f"source-{row['id']}"
+                row['cred_blob']
             )
             sources.append(source)
         return sources

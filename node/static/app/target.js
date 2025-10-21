@@ -4,6 +4,7 @@
 
 import { showError } from './utils.js';
 import { createHelpPanel } from './help/index.js';
+import { showSetTargetModal } from './set_target/index.js';
 
 let helpInitialized = false;
 
@@ -37,5 +38,10 @@ function renderTarget(target) {
 }
 
 export function showSetTarget() {
-    alert('Set target functionality - integrate OAuth flow here');
+    // Use the same callbacks structure used app-wide
+    const callbacks = {
+        loadTarget,
+        // loadDashboard will be injected from app.js if desired, but safe to omit here
+    };
+    showSetTargetModal(callbacks);
 }

@@ -27,7 +27,7 @@ class SyncExecutor:
 
         # Fetch and process events
         delta_result = self._fetch_events(connector_source, source)
-        source_events = self._normalize_events(delta_result['events'])
+        source_events = self._normalize_events(delta_result['events'], source['type'])
 
         # Compute changes
         diff = self._compute_diff(source_events)
@@ -59,12 +59,19 @@ class SyncExecutor:
             source.get('sync_token')
         )
 
-    def _normalize_events(self, raw_events):
-        """Normalize events to internal format."""
-        return [
-            Event.from_graph(e) for e in raw_events
-            if not e.get('@removed')
-        ]
+    def _normalize_events(self, raw_events, provider_type: str):
+        """Normalize events to internal format based on provider type."""
+        events = []
+        for e in raw_events:
+            if e.get('@removed'):
+                continue
+            if provider_type == 'graph':
+                events.append(Event.from_graph(e))
+            elif provider_type == 'google':
+                events.append(Event.from_google(e))
+            else:
+                events.append(Event.from_graph(e))
+        return events
 
     def _compute_diff(self, source_events):
         """Compute diff against existing mappings."""

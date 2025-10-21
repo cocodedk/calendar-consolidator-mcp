@@ -34,7 +34,7 @@ class DiffApplier:
         """Create new events in target."""
         count = 0
         for event in events:
-            event_data = event.to_graph()
+            event_data = self._to_provider_payload(event, connector)
             target_id = connector.create_event(calendar_id, event_data)
             self.config.mappings.create(
                 self.source_id, event.uid, target_id, event.compute_hash()
@@ -46,7 +46,7 @@ class DiffApplier:
         """Update existing events in target."""
         count = 0
         for event, target_id in event_pairs:
-            event_data = event.to_graph()
+            event_data = self._to_provider_payload(event, connector)
             connector.update_event(calendar_id, target_id, event_data)
             self.config.mappings.update_hash(
                 self.source_id, event.uid, event.compute_hash()
@@ -77,3 +77,20 @@ class DiffApplier:
             except Exception:
                 pass  # Event may already be deleted
         return count
+
+    def _to_provider_payload(self, event, connector) -> dict:
+        """Convert Event to the payload format expected by the connector."""
+        try:
+            # Lazy imports to avoid circular deps
+            from ...connectors.graph_connector.connector import GraphConnector
+            from ...connectors.google_connector.connector import GoogleConnector
+
+            if isinstance(connector, GraphConnector):
+                return event.to_graph()
+            if isinstance(connector, GoogleConnector):
+                return event.to_google()
+        except Exception:
+            pass
+
+        # Default to Graph format
+        return event.to_graph()

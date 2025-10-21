@@ -5,7 +5,7 @@ Computes changes without applying them (preview mode).
 
 from typing import Dict, Any
 from ..state import ConfigStore
-from ..connectors import GraphConnector
+from .syncer.connector_factory import get_connector
 from ..model import Event, compute_diff
 
 
@@ -38,11 +38,8 @@ class DryRunSyncer:
             source.get('sync_token')
         )
 
-        # Normalize events
-        source_events = [
-            Event.from_graph(e) for e in delta_result['events']
-            if not e.get('@removed')
-        ]
+        # Normalize events based on provider type
+        source_events = self._normalize_events(delta_result['events'], source['type'])
 
         # Load existing mappings
         all_mappings = self.config.mappings.get_all_for_source(source_id)
@@ -77,17 +74,35 @@ class DryRunSyncer:
         }
 
     def _get_connector(self, config: Dict[str, Any]):
-        """Get connector instance for calendar config."""
-        if config['type'] == 'graph':
-            return GraphConnector(config['credentials'])
-        else:
-            raise NotImplementedError(f"Connector type {config['type']} not implemented")
+        """Get connector instance for calendar config (delegates to factory)."""
+        return get_connector(config)
+
+    def _normalize_events(self, raw_events, provider_type: str):
+        """Normalize provider events to internal Event objects."""
+        normalized = []
+        for e in raw_events:
+            if e.get('@removed'):
+                continue
+            if provider_type == 'graph':
+                normalized.append(Event.from_graph(e))
+            elif provider_type == 'google':
+                normalized.append(Event.from_google(e))
+            else:
+                # Fallback: attempt Graph format
+                normalized.append(Event.from_graph(e))
+        return normalized
 
 
 # API wrapper function
 def preview_sync(source_id: int) -> Dict[str, Any]:
-    """API wrapper to preview sync."""
-    from ..state import ConfigStore
+    """API wrapper to preview sync for a single source."""
     config = ConfigStore()
     syncer = DryRunSyncer(config)
     return syncer.preview_sync(source_id)
+
+
+def preview_all() -> Dict[str, Any]:
+    """API wrapper to preview sync for all active sources."""
+    config = ConfigStore()
+    syncer = DryRunSyncer(config)
+    return syncer.preview_all_sources()

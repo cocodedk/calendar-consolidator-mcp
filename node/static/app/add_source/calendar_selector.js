@@ -7,7 +7,8 @@ import { updateModalBody, showError, showLoading } from './modal.js';
 /**
  * Fetch and display available calendars.
  */
-export async function showCalendarSelector(sessionId, type, onSubmit) {
+export async function showCalendarSelector(sessionId, type, onSubmit, options = {}) {
+  const { multi = true } = options;
   showLoading('Loading calendars...');
 
   try {
@@ -20,7 +21,7 @@ export async function showCalendarSelector(sessionId, type, onSubmit) {
 
     const { calendars } = await response.json();
 
-    displayCalendarList(calendars, sessionId, type, onSubmit);
+    displayCalendarList(calendars, sessionId, type, onSubmit, { multi });
 
   } catch (error) {
     showError(`Error loading calendars: ${error.message}`);
@@ -30,10 +31,11 @@ export async function showCalendarSelector(sessionId, type, onSubmit) {
 /**
  * Display calendar list with checkboxes.
  */
-function displayCalendarList(calendars, sessionId, type, onSubmit) {
+function displayCalendarList(calendars, sessionId, type, onSubmit, { multi }) {
+  const inputType = multi ? 'checkbox' : 'radio';
   const calendarItems = calendars.map((cal, index) => `
     <label class="calendar-item">
-      <input type="checkbox" name="calendar" value="${index}" data-id="${cal.id}" data-name="${cal.name}">
+      <input type="${inputType}" name="calendar" value="${index}" data-id="${cal.id}" data-name="${cal.name}">
       <span class="calendar-name">${cal.name}</span>
       ${cal.canWrite ? '<span class="badge">Read/Write</span>' : '<span class="badge badge-readonly">Read Only</span>'}
     </label>
@@ -41,8 +43,8 @@ function displayCalendarList(calendars, sessionId, type, onSubmit) {
 
   const content = `
     <div class="calendar-selector">
-      <h4>Select Calendars</h4>
-      <p>Choose one or more calendars to add as sources:</p>
+      <h4>${multi ? 'Select Calendars' : 'Select Calendar'}</h4>
+      <p>${multi ? 'Choose one or more calendars to add as sources:' : 'Choose the calendar to use as the target:'}</p>
 
       <div class="calendar-list">
         ${calendarItems}
@@ -59,17 +61,26 @@ function displayCalendarList(calendars, sessionId, type, onSubmit) {
 
   // Attach submit handler
   document.getElementById('submit-calendars').addEventListener('click', () => {
-    const selectedCheckboxes = document.querySelectorAll('input[name="calendar"]:checked');
+    const selectedInputs = document.querySelectorAll('input[name="calendar"]:checked');
 
-    if (selectedCheckboxes.length === 0) {
-      alert('Please select at least one calendar');
+    if (selectedInputs.length === 0) {
+      alert('Please select ' + (multi ? 'at least one calendar' : 'a calendar'));
       return;
     }
 
-    const selectedCalendars = Array.from(selectedCheckboxes).map(checkbox => ({
-      id: checkbox.getAttribute('data-id'),
-      name: checkbox.getAttribute('data-name')
-    }));
+    let selectedCalendars;
+    if (multi) {
+      selectedCalendars = Array.from(selectedInputs).map(input => ({
+        id: input.getAttribute('data-id'),
+        name: input.getAttribute('data-name')
+      }));
+    } else {
+      const input = selectedInputs[0];
+      selectedCalendars = [{
+        id: input.getAttribute('data-id'),
+        name: input.getAttribute('data-name')
+      }];
+    }
 
     onSubmit(sessionId, type, selectedCalendars);
   });
