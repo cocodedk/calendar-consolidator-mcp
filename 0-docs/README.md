@@ -59,6 +59,17 @@ Database schema and storage
 - **[05-settings-table.md](05-database/05-settings-table.md)** - Settings table schema
 - **[06-credential-storage.md](05-database/06-credential-storage.md)** - Credential encryption
 
+### 06-user-guides/
+User-facing documentation
+- **[00-implementation.md](06-user-guides/00-implementation.md)** - Implementation overview
+- **[01-content-guidelines.md](06-user-guides/01-content-guidelines.md)** - Content standards
+- **[02-guide-content.md](06-user-guides/02-guide-content.md)** - Guide content reference
+
+### 07-troubleshooting/
+Common issues and solutions
+- **[00-README.md](07-troubleshooting/00-README.md)** - Troubleshooting index
+- **[01-google-calendar-issues.md](07-troubleshooting/01-google-calendar-issues.md)** - Google Calendar problems ⚠️ Most common!
+
 ### Testing Documentation
 - **[PYTEST_COMPLETE.md](PYTEST_COMPLETE.md)** - Test suite summary (81 tests, 100% passing)
 - **[TEST_SUITE_SUMMARY.md](TEST_SUITE_SUMMARY.md)** - Detailed test coverage breakdown
@@ -81,6 +92,7 @@ For immediate setup instructions, see: **[00-phase0-setup.md](03-implementation/
 3. 02-architecture/01-high-level.md
 4. 03-implementation/00-phase0-setup.md
 5. Follow steps 01-05 in 03-implementation/
+6. **If issues arise**: 07-troubleshooting/
 
 ### For Understanding the System
 1. 01-overview/ (all files)
@@ -92,6 +104,10 @@ For immediate setup instructions, see: **[00-phase0-setup.md](03-implementation/
 1. 03-implementation/ (all steps)
 2. 01-overview/05-success-criteria.md
 3. 04-api-design/ (all files)
+
+### For Troubleshooting Issues
+1. **07-troubleshooting/00-README.md** - Start here for common problems
+2. **07-troubleshooting/01-google-calendar-issues.md** - Most frequent: API not enabled
 
 ## Documentation Principles
 

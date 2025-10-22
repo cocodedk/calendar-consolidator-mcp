@@ -208,8 +208,29 @@ Comprehensive documentation in `0-docs/`:
 - **Implementation**: Step-by-step guides
 - **API Design**: MCP tools and HTTP endpoints
 - **Database**: Schema and storage details
+- **Troubleshooting**: Common issues and solutions
 
 Start with: `0-docs/README.md`
+
+## Troubleshooting
+
+Having issues? Check the troubleshooting guides:
+
+- **[All Troubleshooting Guides](0-docs/07-troubleshooting/00-README.md)** - Complete index
+- **[Google API Not Enabled (HTTP 403)](0-docs/07-troubleshooting/02-google-api-not-enabled.md)** ⚠️ Most common!
+- **[Google Invalid Grant](0-docs/07-troubleshooting/03-google-invalid-grant.md)** - Token expired/revoked
+- **[Google Redirect URI](0-docs/07-troubleshooting/04-google-redirect-uri.md)** - OAuth configuration
+
+### Quick Fix: Google Calendar API Not Enabled
+
+If you see `HttpError 403: Google Calendar API has not been used in project...`:
+
+1. Click the URL in the error message (or go to Google Cloud Console)
+2. Click "Enable" button for Google Calendar API
+3. Wait 2-3 minutes
+4. Try again
+
+See [detailed guide](0-docs/07-troubleshooting/02-google-api-not-enabled.md) for complete solution.
 
 ## Development
 
