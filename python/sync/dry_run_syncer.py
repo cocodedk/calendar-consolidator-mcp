@@ -87,6 +87,8 @@ class DryRunSyncer:
                 normalized.append(Event.from_graph(e))
             elif provider_type == 'google':
                 normalized.append(Event.from_google(e))
+            elif provider_type == 'icloud':
+                normalized.append(Event.from_icloud(e))
             else:
                 # Fallback: attempt Graph format
                 normalized.append(Event.from_graph(e))

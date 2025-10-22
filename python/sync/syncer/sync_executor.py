@@ -69,6 +69,8 @@ class SyncExecutor:
                 events.append(Event.from_graph(e))
             elif provider_type == 'google':
                 events.append(Event.from_google(e))
+            elif provider_type == 'icloud':
+                events.append(Event.from_icloud(e))
             else:
                 events.append(Event.from_graph(e))
         return events

@@ -31,9 +31,16 @@ class Event:
     @classmethod
     def from_graph(cls, graph_event: Dict[str, Any]) -> 'Event':
         """Create Event from Microsoft Graph API format."""
+        # Title fallback: prefer non-empty subject; fallback to bodyPreview if useful; otherwise default
+        raw_subject = graph_event.get('subject')
+        subject = (raw_subject or '').strip()
+        if not subject:
+            body_preview = (graph_event.get('bodyPreview') or '').strip()
+            subject = body_preview if body_preview else '(No title)'
+
         return cls(
-            uid=graph_event['id'],
-            subject=graph_event.get('subject', '(No title)'),
+            uid=str(graph_event['id']),
+            subject=subject,
             start=datetime.fromisoformat(graph_event['start']['dateTime'].replace('Z', '+00:00')),
             end=datetime.fromisoformat(graph_event['end']['dateTime'].replace('Z', '+00:00')),
             location=graph_event.get('location', {}).get('displayName'),
@@ -71,9 +78,13 @@ class Event:
         else:
             end_dt = datetime.fromisoformat(end_obj.get('date', '') + 'T00:00:00+00:00')
 
+        # Title fallback: prefer non-empty summary; otherwise default
+        raw_summary = google_event.get('summary')
+        subject = (raw_summary or '').strip() or '(No title)'
+
         return cls(
-            uid=google_event['id'],
-            subject=google_event.get('summary', '(No title)'),
+            uid=str(google_event['id']),
+            subject=subject,
             start=start_dt,
             end=end_dt,
             location=google_event.get('location'),
@@ -84,6 +95,32 @@ class Event:
             recurrence=json.dumps(google_event.get('recurrence')) if google_event.get('recurrence') else None,
             organizer=(google_event.get('organizer') or {}).get('email'),
             attendees=[(a or {}).get('email') for a in (google_event.get('attendees') or [])]
+        )
+
+    @classmethod
+    def from_icloud(cls, icloud_event: Dict[str, Any]) -> 'Event':
+        """Create Event from iCloud/CalDAV normalized dictionary."""
+        # iCloud helpers normalize fields: uid, subject, start, end, isAllDay, location, body
+        # Title fallback similar to other providers
+        raw_subject = icloud_event.get('subject')
+        subject = (raw_subject or '').strip() or '(No title)'
+
+        # Start/End are ISO strings; normalize Z
+        start_str = (icloud_event.get('start') or '').replace('Z', '+00:00')
+        end_str = (icloud_event.get('end') or '').replace('Z', '+00:00')
+
+        start_dt = datetime.fromisoformat(start_str)
+        end_dt = datetime.fromisoformat(end_str)
+
+        return cls(
+            uid=str(icloud_event.get('uid') or icloud_event.get('id')),
+            subject=subject,
+            start=start_dt,
+            end=end_dt,
+            location=icloud_event.get('location') or None,
+            description=icloud_event.get('body') or None,
+            is_all_day=bool(icloud_event.get('isAllDay', False)),
+            is_cancelled=bool(icloud_event.get('isCancelled', False)),
         )
 
     def to_graph(self) -> Dict[str, Any]:
@@ -131,6 +168,24 @@ class Event:
             event_data['visibility'] = 'private'
 
         return event_data
+
+    def to_icloud(self) -> Dict[str, Any]:
+        """Convert to iCloud/CalDAV normalized dict for iCal builder."""
+        data: Dict[str, Any] = {
+            'uid': self.uid,
+            'subject': self.subject,
+            'start': self.start.isoformat(),
+            'end': self.end.isoformat(),
+        }
+        if self.location:
+            data['location'] = self.location
+        if self.description:
+            data['body'] = self.description
+        if self.is_all_day:
+            data['isAllDay'] = True
+        if self.is_cancelled:
+            data['isCancelled'] = True
+        return data
 
     def compute_hash(self) -> str:
         """Compute hash of event content for change detection."""

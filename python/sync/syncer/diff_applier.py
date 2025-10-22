@@ -84,11 +84,14 @@ class DiffApplier:
             # Lazy imports to avoid circular deps
             from ...connectors.graph_connector.connector import GraphConnector
             from ...connectors.google_connector.connector import GoogleConnector
+            from ...connectors.icloud_connector.connector import ICloudConnector
 
             if isinstance(connector, GraphConnector):
                 return event.to_graph()
             if isinstance(connector, GoogleConnector):
                 return event.to_google()
+            if isinstance(connector, ICloudConnector):
+                return event.to_icloud()
         except Exception:
             pass
 
