@@ -16,9 +16,18 @@ Configure Google Cloud Project and OAuth credentials for Calendar API access.
 4. Click "Create"
 
 ### 2. Enable Google Calendar API
+**⚠️ CRITICAL STEP - Most Common Setup Issue**
+
 1. Navigate to "APIs & Services" → "Library"
 2. Search "Google Calendar API"
-3. Click "Enable"
+3. Click on "Google Calendar API"
+4. Click the blue "Enable" button
+5. Wait 2-3 minutes for changes to propagate
+
+**Quick Enable Link:**
+`https://console.developers.google.com/apis/api/calendar-json.googleapis.com/overview?project=YOUR_PROJECT_ID`
+
+Replace `YOUR_PROJECT_ID` with your actual project ID from step 1.
 
 ### 3. Configure OAuth Consent Screen
 1. Go to "APIs & Services" → "OAuth consent screen"
@@ -70,3 +79,11 @@ Full access to events (for target calendar).
 During development, add test user emails in OAuth consent screen.
 Production apps require Google verification for public access.
 
+## Troubleshooting
+
+For detailed troubleshooting, see:
+- [Google Calendar Issues Guide](../07-troubleshooting/01-google-calendar-issues.md)
+- [Troubleshooting Index](../07-troubleshooting/00-README.md)
+
+**Most Common Issue**: HTTP 403 - Google Calendar API not enabled.
+See troubleshooting guide for step-by-step solutions.
