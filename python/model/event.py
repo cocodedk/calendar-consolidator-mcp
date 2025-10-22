@@ -186,6 +186,10 @@ class Event:
         if self.is_cancelled:
             data['isCancelled'] = True
         return data
+    
+    def to_caldav(self) -> Dict[str, Any]:
+        """Alias for to_icloud() for backward compatibility."""
+        return self.to_icloud()
 
     def compute_hash(self) -> str:
         """Compute hash of event content for change detection."""
