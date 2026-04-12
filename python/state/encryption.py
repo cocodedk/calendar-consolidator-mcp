@@ -5,9 +5,12 @@ Encryption utilities for storing sensitive credentials.
 import os
 import json
 import base64
+import keyring
 from pathlib import Path
 from cryptography.fernet import Fernet
 from typing import Optional
+
+_KEYRING_SERVICE = 'calendar-consolidator-mcp'
 
 
 def get_key_file_path() -> Path:
@@ -105,3 +108,18 @@ def delete_credentials(key: str) -> bool:
         return delete_creds(key)
     except ImportError:
         return False
+
+
+def load_credentials(source_id: str) -> Optional[dict]:
+    """Load credentials for a source from the system keyring.
+
+    Args:
+        source_id: Identifier for the calendar source.
+
+    Returns:
+        Credentials dict if found, None otherwise.
+    """
+    raw = keyring.get_password(_KEYRING_SERVICE, source_id)
+    if raw is None:
+        return None
+    return json.loads(raw)
