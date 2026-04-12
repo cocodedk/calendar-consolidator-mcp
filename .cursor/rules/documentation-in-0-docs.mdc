@@ -1,5 +1,0 @@
----
-alwaysApply: true
-description: Documentation location rule
----
-All documentation must be in @0-docs/
