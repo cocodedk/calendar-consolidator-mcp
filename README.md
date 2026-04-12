@@ -2,6 +2,10 @@
 
 A lightweight system to consolidate multiple calendars (Microsoft 365, iCloud/CalDAV) into a single unified calendar with one-way mirroring and incremental syncing.
 
+## Website
+- [English](https://cocodedk.github.io/calendar-consolidator-mcp/)
+- [فارسی (Persian)](https://cocodedk.github.io/calendar-consolidator-mcp/fa/)
+
 ## Features
 
 - **Multi-source support**: Microsoft Graph, CalDAV (coming soon)
@@ -253,9 +257,13 @@ npx playwright test --ui
 
 See `tests/` for Python tests and `tests-e2e/` for Playwright tests.
 
+## Author
+
+**Babak Bandpey** — [cocode.dk](https://cocode.dk) | [LinkedIn](https://linkedin.com/in/babakbandpey) | [GitHub](https://github.com/cocodedk)
+
 ## License
 
-MIT License - Copyright (c) 2025 Babak Bandpey - cocode.dk
+Apache-2.0 | © 2026 [Cocode](https://cocode.dk) | Created by [Babak Bandpey](https://linkedin.com/in/babakbandpey)
 
 See [LICENSE](LICENSE) file for details.
 

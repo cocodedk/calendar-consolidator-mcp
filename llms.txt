@@ -1,0 +1,28 @@
+# Calendar Consolidator MCP
+
+> A lightweight system to consolidate multiple calendars (Microsoft 365, iCloud/CalDAV) into a single unified calendar with one-way mirroring and incremental syncing.
+
+## Overview
+
+Calendar Consolidator MCP is a dual-runtime (Node.js + Python) project that:
+- Connects to Microsoft 365 via Graph API and CalDAV sources
+- Mirrors events one-way into a target calendar
+- Performs incremental/delta sync with change detection
+- Exposes an MCP server for AI/agent integration
+- Provides a simple web UI for configuration
+
+## Key Resources
+
+- [GitHub Repository](https://github.com/cocodedk/calendar-consolidator-mcp)
+- [Documentation](https://github.com/cocodedk/calendar-consolidator-mcp/tree/main/0-docs)
+
+## Tech Stack
+
+- Runtime: Node.js 20, Python 3.12
+- Storage: SQLite
+- Protocol: MCP (Model Context Protocol)
+- Testing: Jest (Node.js), pytest (Python)
+
+## Author
+
+Babak Bandpey — https://cocode.dk — https://linkedin.com/in/babakbandpey
