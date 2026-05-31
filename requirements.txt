@@ -28,7 +28,7 @@ pytz>=2026.1.post1
 # Testing
 pytest>=7.4.0
 pytest-cov>=4.1.0
-pytest-mock>=3.11.0
+pytest-mock>=3.15.1
 pytest-asyncio>=0.21.0
 freezegun>=1.2.2
 responses>=0.26.0
