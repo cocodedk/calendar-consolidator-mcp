@@ -1,7 +1,7 @@
 # Calendar Consolidator MCP - Python Dependencies
 
 # Microsoft Graph API
-msal>=1.36.0
+msal>=1.37.0
 msgraph-core>=0.2.2
 requests>=2.31.0
 
