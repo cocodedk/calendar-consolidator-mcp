@@ -19,7 +19,7 @@
     "cors": "^2.8.6"
   },
   "devDependencies": {
-    "@jest/globals": "^30.4.1",
+    "@jest/globals": "^30.5.2",
     "jest": "^30.4.2"
   },
   "engines": {
